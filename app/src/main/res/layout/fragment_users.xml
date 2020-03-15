@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UsersFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragments_users_list"
+        android:layout_width="match_parent"
+        android:layout_height="582dp"
+        android:layout_marginTop="50dp" />
+
+
+    <Button
+        android:id="@+id/home_startchat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="400dp"
+
+        android:text="Start Chat" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="521dp"
+        android:layout_marginTop="100dp"
+        android:gravity="right"
+        android:text="Ignore. Delete later."
+        android:textColor="#E91E3C"
+        android:textSize="36sp" />
+
+</FrameLayout>

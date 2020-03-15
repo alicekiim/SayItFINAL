@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "484192537583",
+    "firebase_url": "https://siateacher-f0d6c.firebaseio.com",
+    "project_id": "siateacher-f0d6c",
+    "storage_bucket": "siateacher-f0d6c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484192537583:android:ad5e877fe9e7820feac41a",
+        "android_client_info": {
+          "package_name": "com.example.siateacher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484192537583-2s18durrms2fb95627gfkdmf02vddd4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.siateacher",
+            "certificate_hash": "b2b3aa720f00e8f355ad06f827f54823f973579b"
+          }
+        },
+        {
+          "client_id": "484192537583-rhaa5ni2hptbthlmgdr2ndv9mojqih7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ5GX0lqLffAoNKQs2Ghw2MX6ZK2nbRww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484192537583-rhaa5ni2hptbthlmgdr2ndv9mojqih7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

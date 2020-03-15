@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".settingsActivity">
+
+    <include layout="@layout/bar_layout" android:id="@+id/settings_bar"/>
+
+    <Button
+        android:id="@+id/settingPage_statusBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="149dp"
+        android:text="Change status" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/settingsPage_image"
+        android:layout_width="170dp"
+        android:layout_height="235dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="119dp"
+        android:layout_marginTop="47dp"
+        android:layout_marginEnd="121dp"
+        android:background="#00FFFFFF"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/settingsPage_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="317dp"
+        android:text="Hiya" />
+
+    <Button
+        android:id="@+id/settingPage_imageBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="227dp"
+        android:text="Change image" />
+
+    <TextView
+        android:id="@+id/settingsPage_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="280dp"
+        android:text="Name" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="521dp"
+        android:layout_marginTop="500dp"
+        android:gravity="right"
+        android:text="Image not uploading."
+        android:textColor="#E91E3C"
+        android:textSize="36sp" />
+</RelativeLayout>
