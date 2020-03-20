@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mChatButton;
     //private Button mQuizButton;
-   // private Button mFAQButton;
+    // private Button mFAQButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,34 +68,38 @@ public class MainActivity extends AppCompatActivity {
 
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.name);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            //Go to login
+        }
+        else {
 
-        mfirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mReference = FirebaseDatabase.getInstance().getReference("Users").child(mfirebaseUser.getUid());
+            mfirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            mReference = FirebaseDatabase.getInstance().getReference("Users").child(mfirebaseUser.getUid());
 
-        mReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Users user = dataSnapshot.getValue(Users.class);
-                username.setText(user.getName());
-                if(user.getImage().equals("default")){
-                    profile_image.setImageResource(R.mipmap.ic_launcher);
-                }else{
+            mReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Users user = dataSnapshot.getValue(Users.class);
 
-
-                    Glide.with(getApplicationContext()).load(user.getImage()).into(profile_image);
+                    username.setText(user.getName());
+                    //if (user.getImage().equals("default")) {
+                    if ("default".equals(user.getImage())) {
+                        profile_image.setImageResource(R.mipmap.ic_launcher);
+                    } else {
+                        Glide.with(getApplicationContext()).load(user.getImage()).into(profile_image);
+                    }
                 }
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
 
-            }
-        });
+        }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-      //  mFAQButton = (Button) findViewById(R.id.mainPage_faqButton);
+        //  mFAQButton = (Button) findViewById(R.id.mainPage_faqButton);
 
 /*        mChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,11 +162,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-
-
-        
-
         return true;
     }
+
+
 }

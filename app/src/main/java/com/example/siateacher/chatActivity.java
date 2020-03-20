@@ -35,7 +35,7 @@ public class chatActivity extends AppCompatActivity {
     private androidx.appcompat.widget.Toolbar mToolbar;
 
     CircleImageView profile_image;
-    TextView username;
+    //TextView username;
 
     ImageButton sendbtn;
     EditText chatbox;
@@ -64,12 +64,7 @@ public class chatActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -79,7 +74,7 @@ public class chatActivity extends AppCompatActivity {
 
     //mine
         profile_image = findViewById(R.id.profile_image);
-        username = findViewById(R.id.name);
+        //username = findViewById(R.id.name);
 
         sendbtn = findViewById(R.id.sendbtn);
         chatbox = findViewById(R.id.chatbox);
@@ -119,7 +114,7 @@ public class chatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();*/
 
                 Users user = dataSnapshot.getValue(Users.class);
-                username.setText(user.getName());
+                //username.setText(user.getName());
 
                 if (user.getImage().equals("default")) {
                     profile_image.setImageResource(R.mipmap.ic_launcher);

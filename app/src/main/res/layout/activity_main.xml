@@ -48,12 +48,6 @@
         android:layout_height="565dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
     </androidx.viewpager.widget.ViewPager>
 
 </RelativeLayout>

@@ -17,18 +17,19 @@
         android:text="start login page" />
 
     <Button
-        android:id="@+id/startPage_regButton"
+        android:id="@+id/iam_teacher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/create_a_new_account" />
-
-    <Button
-        android:id="@+id/startPage_loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="244dp"
-        android:text="@string/login" />
+        android:layout_marginBottom="288dp"
+        android:text="I am a teacher" />
+    <Button
+        android:id="@+id/iam_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="188dp"
+        android:text="I am a student" />
 </RelativeLayout>

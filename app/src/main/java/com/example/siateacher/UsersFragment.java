@@ -1,6 +1,8 @@
 package com.example.siateacher;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,17 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -38,14 +39,13 @@ public class UsersFragment extends Fragment {
     private List<Users> mUsers;
 
     private View mMainView;
+    ///////////////////////////////////////////////////////////////////////////
+    private Button mStartChatButton;
+    int mListCnt = 0;
+    //////////////////////////////////////////////////////////////////////////
+    public UsersFragment(){
 
-
-
-    public UsersFragment() {
-        // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,10 +58,32 @@ public class UsersFragment extends Fragment {
 
         mUsers = new ArrayList<>();
 
-        readUsers();
 
+
+        readUsers();
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        mStartChatButton = mMainView.findViewById(R.id.home_startchat);
+
+
+        mStartChatButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent chat_intent = new Intent(getContext(), chatActivity.class);
+                if(mListCnt==mUsers.size()){
+                    mListCnt = 0;
+                }
+                chat_intent.putExtra("id", mUsers.get(mListCnt).getId());
+                getContext().startActivity(chat_intent);
+                mListCnt++;
+                //mStartChatButton.setText("aaaaa");
+            }
+
+        });
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
         return mMainView;
     }
+
+
 
     private void readUsers() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,7 +96,8 @@ public class UsersFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Users user = snapshot.getValue(Users.class);
 
-                    if (!user.getName().equals(firebaseUser.getUid())) {
+                    //if (!user.getName().equals(firebaseUser.getUid())) {
+                    if (!firebaseUser.getUid().equals(user.getName())) {
                         mUsers.add(user);
                     }
 
@@ -95,5 +118,3 @@ public class UsersFragment extends Fragment {
 
 
 }
-
-

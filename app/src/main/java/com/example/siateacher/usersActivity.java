@@ -1,10 +1,8 @@
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,19 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder> {
 
     private Context mContext;
     private List<Users> mUsers;
+
 
     public usersActivity (Context mContext, List<Users> mUsers){
         this.mUsers = mUsers;
@@ -49,7 +42,9 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
         holder.name.setText(user.getName());
         holder.status.setText(user.getStatus());
 
-        if(user.getImage().equals("default")){
+
+        //if(user.getImage().equals("default")){
+        if("default".equals(user.getImage())){
             holder.profile_image.setImageResource(R.mipmap.ic_launcher);
         }else {
             Glide.with(mContext).load(user.getImage()).into(holder.profile_image);
@@ -66,6 +61,8 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
         });
 
     }
+
+
 
     @Override
     public int getItemCount(){

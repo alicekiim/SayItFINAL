@@ -7,37 +7,37 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.siateacher.Student.StudentMainActivity;
+import com.example.siateacher.Student.TeacherLoginRegActivity;
 
 public class StartActivity extends AppCompatActivity {
 
-        private Button mRegBtn;
-        private Button mLoginBtn;
+        private Button mTeacher;
+        private Button mStudent;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_start);
 
-            mRegBtn = (Button) findViewById(R.id.startPage_regButton);
-            mLoginBtn = (Button) findViewById(R.id.startPage_loginButton);
+            mTeacher = (Button) findViewById(R.id.iam_teacher);
+            mStudent = (Button) findViewById(R.id.iam_student);
 
-            mRegBtn.setOnClickListener(new View.OnClickListener() {
+            mTeacher.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Intent reg_intent = new Intent(StartActivity.this, RegisterActivity.class);
+                    Intent reg_intent = new Intent(StartActivity.this, TeacherLoginRegActivity.class);
                     startActivity(reg_intent);
 
                 }
             });
 
-            mLoginBtn.setOnClickListener(new View.OnClickListener() {
+            mStudent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Intent login_intent = new Intent(StartActivity.this, LoginActivity.class);
+                    Intent login_intent = new Intent(StartActivity.this, StudentMainActivity.class);
                     startActivity(login_intent);
 
                 }
