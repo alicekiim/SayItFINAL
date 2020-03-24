@@ -81,14 +81,21 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Users user = dataSnapshot.getValue(Users.class);
-
-                    username.setText(user.getName());
-                    //if (user.getImage().equals("default")) {
-                    if ("default".equals(user.getImage())) {
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if(user != null) {
+                        username.setText(user.getName());
+                        //if (user.getImage().equals("default")) {
+                        if ("default".equals(user.getImage())) {
+                            profile_image.setImageResource(R.mipmap.ic_launcher);
+                        } else {
+                            Glide.with(getApplicationContext()).load(user.getImage()).into(profile_image);
+                        }
+                    }else {
+                        username.setText("");
                         profile_image.setImageResource(R.mipmap.ic_launcher);
-                    } else {
-                        Glide.with(getApplicationContext()).load(user.getImage()).into(profile_image);
+
                     }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -113,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-    @Override
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+   /* @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -124,12 +131,15 @@ public class MainActivity extends AppCompatActivity {
             backToStartPage();
         }
     }
-
+*/
+////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void backToStartPage() {
         Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
         startActivity(startIntent);
         finish();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-//change this to switch
 
         if(item.getItemId() == R.id.mainPage_accountsettingsButton){
             Intent settings_intent = new Intent(MainActivity.this, settingsActivity.class);

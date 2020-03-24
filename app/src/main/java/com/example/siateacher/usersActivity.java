@@ -1,3 +1,4 @@
+/*
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
@@ -83,4 +84,4 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
             profile_image = itemView.findViewById(R.id.profile_image);
         }
     }
-}
+}*/

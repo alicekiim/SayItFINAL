@@ -1,3 +1,4 @@
+/*
 package com.example.siateacher;
 
 
@@ -29,9 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+*/
 /**
  * A simple {@link Fragment} subclass.
- */
+ *//*
+
+
 public class UsersFragment extends Fragment {
 
     private RecyclerView mUsersListRecycler;
@@ -52,15 +56,17 @@ public class UsersFragment extends Fragment {
         // Inflate the layout for this fragment
         mMainView = inflater.inflate(R.layout.fragment_users, container, false);
 
-        mUsersListRecycler = mMainView.findViewById(R.id.fragments_users_list);
-        mUsersListRecycler.setHasFixedSize(true);
-        mUsersListRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        //mUsersListRecycler = mMainView.findViewById(R.id.fragments_users_list);
+        //mUsersListRecycler.setHasFixedSize(true);
+        //mUsersListRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mUsers = new ArrayList<>();
 
 
 
         readUsers();
+
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         mStartChatButton = mMainView.findViewById(R.id.home_startchat);
 
@@ -97,14 +103,15 @@ public class UsersFragment extends Fragment {
                     Users user = snapshot.getValue(Users.class);
 
                     //if (!user.getName().equals(firebaseUser.getUid())) {
-                    if (!firebaseUser.getUid().equals(user.getName())) {
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if (!firebaseUser.getUid().equals(user.getId())) {
                         mUsers.add(user);
                     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
 
                 usersActivity = new usersActivity(getContext(), mUsers);
-                mUsersListRecycler.setAdapter(usersActivity);
+                //mUsersListRecycler.setAdapter(usersActivity);
             }
 
 
@@ -118,3 +125,4 @@ public class UsersFragment extends Fragment {
 
 
 }
+*/

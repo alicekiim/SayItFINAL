@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.siateacher">
 
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -12,35 +13,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Student.StudentMainActivity"></activity>
-        <activity android:name=".Student.TeacherLoginRegActivity" />
+        <activity android:name="com.example.siateacher.Student.StudentMainActivity"></activity>
+        <activity android:name="com.example.siateacher.TeacherLoginRegActivity" />
         <activity
-            android:name=".ResetPasswordActivity"
-            android:parentActivityName=".LoginActivity" />
-        <activity android:name=".chatActivity" />
+            android:name="com.example.siateacher.ResetPasswordActivity"
+            android:parentActivityName="com.example.siateacher.LoginActivity" />
+        <activity android:name="com.example.siateacher.chatActivity" />
         <activity
-            android:name=".usersActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.example.siateacher.usersActivity"
+            android:parentActivityName="com.example.siateacher.MainActivity" />
         <activity
-            android:name=".statusActivity"
-            android:parentActivityName=".settingsActivity" />
+            android:name="com.example.siateacher.statusActivity"
+            android:parentActivityName="com.example.siateacher.settingsActivity" />
         <activity
-            android:name=".settingsActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".createQuizActivity" />
-        <activity android:name=".quizActivity" />
-        <activity android:name=".faqActivity" />
-        <activity android:name=".textActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".StartActivity" />
-        <activity android:name=".MainActivity">
+            android:name="com.example.siateacher.settingsActivity"
+            android:parentActivityName="com.example.siateacher.MainActivity" />
+        <activity android:name="com.example.siateacher.createQuizActivity" />
+        <activity android:name="com.example.siateacher.quizActivity" />
+        <activity android:name="com.example.siateacher.faqActivity" />
+        <activity android:name="com.example.siateacher.textActivity" />
+        <activity android:name="com.example.siateacher.LoginActivity" />
+        <activity android:name="com.example.siateacher.RegisterActivity" />
+        <activity android:name="com.example.siateacher.MainActivity"/>
+
+        <activity android:name="com.example.siateacher.StartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

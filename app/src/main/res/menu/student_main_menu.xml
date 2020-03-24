@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/studentMainPage_faqButton"
+        android:title="@string/faq_s" />
+    <item
         android:id="@+id/studentMainPage_logoutButton"
         android:title="@string/log_out" />
+
+
 </menu>

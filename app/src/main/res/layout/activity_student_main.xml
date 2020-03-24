@@ -12,6 +12,7 @@
 
         <include layout="@layout/bar_layout" android:id="@+id/student_main_toolbar"/>
 
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/StudentTabLayout"
         android:layout_width="match_parent"

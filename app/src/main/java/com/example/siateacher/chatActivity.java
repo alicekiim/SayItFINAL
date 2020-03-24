@@ -1,15 +1,17 @@
 package com.example.siateacher;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,10 +37,15 @@ public class chatActivity extends AppCompatActivity {
     private androidx.appcompat.widget.Toolbar mToolbar;
 
     CircleImageView profile_image;
-    //TextView username;
+    //////////////////////////////////////////////////////////////////////////////////////
+    TextView username;
+    //////////////////////////////////////////////////////////////////////////////////////
 
     ImageButton sendbtn;
     EditText chatbox;
+    //////////////////////////////////////////////////////////////////////////////////////
+    private Button mEndChat;//chat deleted
+    //////////////////////////////////////////////////////////////////////////////////////
 
     MessageAdapter messageAdapter;
     List<Chat> mchat;
@@ -52,8 +59,9 @@ public class chatActivity extends AppCompatActivity {
 
     ValueEventListener seenListener;
 
-
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    final ArrayList<String> Ckeylist = new ArrayList<String>();//Firebase Chats Uid
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +80,17 @@ public class chatActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-    //mine
+        //mine
         profile_image = findViewById(R.id.profile_image);
-        //username = findViewById(R.id.name);
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        username = findViewById(R.id.name);
+        //////////////////////////////////////////////////////////////////////////////////////////
 
         sendbtn = findViewById(R.id.sendbtn);
         chatbox = findViewById(R.id.chatbox);
-
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        mEndChat = findViewById(R.id.button4);
+        ///////////////////////////////////////////////////////////////////////////////////////////
         intent = getIntent();
         final String userid = intent.getStringExtra("id");
         //final String stat = intent.getStringExtra("status");
@@ -103,7 +115,45 @@ public class chatActivity extends AppCompatActivity {
 
             }
         });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////C: ¡°end chat¡± button AlertDialog
+        mEndChat.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                AlertDialog.Builder builder = new AlertDialog.Builder(chatActivity.this);
 
+                builder.setTitle("chat delete");
+                builder.setMessage("Are you sure you want to end chat? The chat will be deleted.");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {//yes click
+
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
+                        for (int i = 0; i < Ckeylist.size(); i++){
+                            if (Ckeylist.get(i) != null) {
+                                ref.child(Ckeylist.get(i)).removeValue();
+                                finish();
+                            }
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener(){//no click
+                    @Override
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        //Toast.makeText(getApplicationContext(), "NO", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+
+                alertDialog.show();
+            }
+
+        });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -114,7 +164,9 @@ public class chatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();*/
 
                 Users user = dataSnapshot.getValue(Users.class);
-                //username.setText(user.getName());
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+                username.setText(user.getName());
+                /////////////////////////////////////////////////////////////////////////////////////////////////
 
                 if (user.getImage().equals("default")) {
                     profile_image.setImageResource(R.mipmap.ic_launcher);
@@ -180,10 +232,16 @@ public class chatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mchat.clear();
+                ////////////////////////////////////////////////////////////////////////////////////
+                Ckeylist.clear();
+                ////////////////////////////////////////////////////////////////////////////////////
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
                     if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
                         mchat.add(chat);
+                        //////////////////////////////////////////////////////////////////////////////////////
+                        Ckeylist.add(snapshot.getKey());
+                        /////////////////////////////////////////////////////////////////////////////////////
                     }
 
                     messageAdapter = new MessageAdapter(getApplicationContext(), mchat,imageurl);
@@ -204,3 +262,4 @@ public class chatActivity extends AppCompatActivity {
         reference.removeEventListener(seenListener);
     }
 }
+

@@ -25,10 +25,6 @@ public class StudentSectionsPagerAdapter extends FragmentPagerAdapter {
                 return reqFragment;
 
             case 1:
-                chatsFragment chaFragment = new chatsFragment();
-                return chaFragment;
-
-            case 2:
                 quizFragment quizFragment = new quizFragment();
                 return quizFragment;
 
@@ -41,7 +37,7 @@ public class StudentSectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Nullable
@@ -52,9 +48,6 @@ public class StudentSectionsPagerAdapter extends FragmentPagerAdapter {
                 return "home";
 
             case 1:
-                return "chats";
-
-            case 2:
                 return "quiz";
 
             default:

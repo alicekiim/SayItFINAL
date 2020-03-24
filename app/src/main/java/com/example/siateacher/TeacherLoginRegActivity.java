@@ -1,4 +1,4 @@
-package com.example.siateacher.Student;
+package com.example.siateacher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import com.example.siateacher.LoginActivity;
-import com.example.siateacher.R;
-import com.example.siateacher.RegisterActivity;
 
 public class TeacherLoginRegActivity extends AppCompatActivity {
 
