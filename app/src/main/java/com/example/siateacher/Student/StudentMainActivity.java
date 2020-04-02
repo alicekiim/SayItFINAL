@@ -10,28 +10,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.example.siateacher.MainActivity;
 import com.example.siateacher.R;
-import com.example.siateacher.Users;
 import com.example.siateacher.faqActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StudentMainActivity extends AppCompatActivity {
 
@@ -41,24 +29,13 @@ public class StudentMainActivity extends AppCompatActivity {
     private StudentSectionsPagerAdapter mStudentSectionsPagerAdapter;
     private TabLayout mTabLayout;;
 
-    //private DatabaseReference mDatabase;
-
-    //private FirebaseAuth mAuth;
-
-    // [START declare_auth]
-    private FirebaseAuth mAuth;
-    // [END declare_auth]
-
-
+    private String mAuth; //로그인한 학생 아이디
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
-
-        // Initialize Firebase Auth
-        //mAuth = FirebaseAuth.getInstance();
 
         mToolbar = (Toolbar) findViewById(R.id.student_main_toolbar);
         setSupportActionBar(mToolbar);
@@ -75,7 +52,6 @@ public class StudentMainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
 
-
     }
 
     @Override
@@ -90,10 +66,37 @@ public class StudentMainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
+        mAuth = FirebaseAuth.getInstance().getCurrentUser().getUid(); //로그인한 사용자 Uid
 
         if(item.getItemId() == R.id.studentMainPage_logoutButton){
-            FirebaseAuth.getInstance().signOut();
-            finishAffinity();
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList");//Database [ChatList] read
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    DatabaseReference delRef = FirebaseDatabase.getInstance().getReference("ChatList");
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String user = snapshot.getKey(); //ChatList 키값(선생)을 읽어온다
+
+                        delRef.child(user).child(mAuth).removeValue(); //Database [ChatList] 학생정보 삭제
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            FirebaseAuth.getInstance().getCurrentUser().delete(); //익명사용자 Authentication 에서 삭제
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Students");
+            ref.child(mAuth).removeValue(); //익명사용자 Database [Students]에서 삭제
+
+
+            FirebaseAuth.getInstance().signOut(); //사용자 로그아웃
+
+            finishAffinity(); // APP 종료
 
         }
 
@@ -104,4 +107,6 @@ public class StudentMainActivity extends AppCompatActivity {
 
         return true;
     }
+
 }
+

@@ -7,6 +7,9 @@
     <string name="create_an_account">Create an account</string>
     <string name="log_out">Log Out</string>
     <string name="login">Login</string>
+    <string name="link">
+        <a href="http://igor.doc.gold.ac.uk/~mkim054/SIA/index.html"> my link </a>
+    </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

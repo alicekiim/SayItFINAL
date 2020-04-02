@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -72,11 +70,11 @@ public class statusActivity extends AppCompatActivity {
                 mStatusDatabase.child("status").setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                         if(task.isSuccessful()){
-                             mProgress.dismiss();
-                         }else{
-                             Toast.makeText(getApplicationContext(),"there was an error", Toast.LENGTH_LONG).show();
-                         }
+                        if(task.isSuccessful()){
+                            mProgress.dismiss();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"there was an error", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 

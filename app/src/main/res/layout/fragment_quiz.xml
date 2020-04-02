@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="521dp"
         android:layout_marginTop="100dp"
-        android:text="quizzes here" />
+        android:text="@string/link"
+        android:id="@+id/link"/>
 
 </FrameLayout>

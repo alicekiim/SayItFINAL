@@ -11,13 +11,4 @@
         android:layout_height="582dp"
         android:layout_marginTop="50dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="521dp"
-        android:layout_marginTop="100dp"
-        android:gravity="right"
-        android:text="chatsFragment.java"
-        android:textColor="#E91E3C"
-        android:textSize="36sp" />
-
 </RelativeLayout>

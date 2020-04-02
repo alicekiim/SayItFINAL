@@ -1,7 +1,6 @@
 package com.example.siateacher;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }else{
             Glide.with(mContext).load(imageurl).into(holder.profile_image);
         }
-    //checks for last message
+        //checks for last message
         if (position == mChat.size()-1){
             if(chat.isIsseen()){
                 holder.txt_seen.setText("Seen");

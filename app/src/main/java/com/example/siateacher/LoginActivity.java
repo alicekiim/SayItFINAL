@@ -60,13 +60,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-                mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent back_intent = new Intent(LoginActivity.this, StartActivity.class);
-                        startActivity(back_intent);
-                    }
-                });
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back_intent = new Intent(LoginActivity.this, StartActivity.class);
+                startActivity(back_intent);
+            }
+        });
 
         mLoginButton.setOnClickListener(new View.OnClickListener(){
             @Override

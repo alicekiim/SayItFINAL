@@ -35,6 +35,8 @@
                 android:textColor="#ffffff" />
         </LinearLayout>
 
+
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/mainTabLayout"
             android:layout_width="match_parent"
@@ -49,5 +51,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
     </androidx.viewpager.widget.ViewPager>
+
 
 </RelativeLayout>

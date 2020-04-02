@@ -1,18 +1,17 @@
-/*
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -40,15 +39,16 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
 
         final Users user = mUsers.get(position);
-        holder.name.setText(user.getName());
-        holder.status.setText(user.getStatus());
+        if(mUsers.size() !=0) {
+            holder.name.setText(user.getName());
+            //holder.name.setText(user.getId());
+            holder.status.setText(user.getStatus());
 
-
-        //if(user.getImage().equals("default")){
-        if("default".equals(user.getImage())){
-            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
-        }else {
-            Glide.with(mContext).load(user.getImage()).into(holder.profile_image);
+            if("default".equals(user.getImage())){
+                holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+            }else {
+                Glide.with(mContext).load(user.getImage()).into(holder.profile_image);
+            }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
@@ -56,6 +56,8 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
             public void onClick(View view){
                 Intent chat_intent = new Intent(mContext, chatActivity.class);
                 chat_intent.putExtra("id", user.getId());
+                chat_intent.putExtra("classification", "teacher"); //학생으로 채팅에 들어간건지 선생으로 들어간건지 체크하기 위한 값
+
                 mContext.startActivity(chat_intent);
             }
 
@@ -63,25 +65,22 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
 
     }
 
-
-
     @Override
     public int getItemCount(){
         return mUsers.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder{
+
         public TextView name;
         public TextView status;
         public ImageView profile_image;
 
         public ViewHolder (View itemView){
             super(itemView);
-
             name = itemView.findViewById(R.id.user_single_name);
             status = itemView.findViewById(R.id.user_single_status);
             profile_image = itemView.findViewById(R.id.profile_image);
         }
     }
-}*/
+}
