@@ -39,11 +39,14 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
 
         final Users user = mUsers.get(position);
-        if(mUsers.size() !=0) {
-            holder.name.setText(user.getName());
-            //holder.name.setText(user.getId());
+        if(mUsers.size() !=0) {//if there ARE users in the database
+
+            //get their name
+            //get their status
+            holder.name.setText(user.getId());
             holder.status.setText(user.getStatus());
 
+            //and get their image, if no unique image exists, use default image
             if("default".equals(user.getImage())){
                 holder.profile_image.setImageResource(R.mipmap.ic_launcher);
             }else {
@@ -56,7 +59,7 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
             public void onClick(View view){
                 Intent chat_intent = new Intent(mContext, chatActivity.class);
                 chat_intent.putExtra("id", user.getId());
-                chat_intent.putExtra("classification", "teacher"); //학생으로 채팅에 들어간건지 선생으로 들어간건지 체크하기 위한 값
+                chat_intent.putExtra("classification", "teacher"); //checks if teacher entered the chat
 
                 mContext.startActivity(chat_intent);
             }
@@ -76,6 +79,7 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
         public TextView status;
         public ImageView profile_image;
 
+        //view object created
         public ViewHolder (View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.user_single_name);

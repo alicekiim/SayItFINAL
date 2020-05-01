@@ -32,6 +32,7 @@ public class quizFragment extends Fragment {
         // Inflate the layout for this fragment
         mMainView = inflater.inflate(R.layout.fragment_quiz, container, false);
 
+        //add link to quiz
         TextView text = mMainView.findViewById(R.id.link);
         text.setMovementMethod(LinkMovementMethod.getInstance());
 

@@ -7,12 +7,14 @@ public class Users {
     public String name;
     public String image;
     public String status;
+    public int num;
 
-    public Users(String id, String name, String image, String status) {
+    public Users(String id, String name, String image, String status,int num) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.status = status;
+        this.num = num;
     }
 
     public Users() {
@@ -46,6 +48,14 @@ public class Users {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 
 }

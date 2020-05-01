@@ -2,6 +2,7 @@ package com.example.siateacher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,11 +27,21 @@ public class TeacherLoginRegActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Say It App - Teacher Area");
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back_intent = new Intent(TeacherLoginRegActivity.this, StartActivity.class);
+                startActivity(back_intent);
+            }
+        });
 
         mRegBtn = (Button) findViewById(R.id.startPage_regButton);
         mLoginBtn = (Button) findViewById(R.id.startPage_loginButton);
 
+        //send to register activity
         mRegBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,6 +52,7 @@ public class TeacherLoginRegActivity extends AppCompatActivity {
             }
         });
 
+        //send to login activity
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

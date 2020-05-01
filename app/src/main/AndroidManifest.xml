@@ -13,11 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.example.siateacher.Student.StudentMainActivity"></activity>
-        <activity android:name="com.example.siateacher.TeacherLoginRegActivity" />
+        <activity android:name="com.example.siateacher.TeacherLoginRegActivity"
+            android:parentActivityName="com.example.siateacher.StartActivity"/>
         <activity
             android:name="com.example.siateacher.ResetPasswordActivity"
             android:parentActivityName="com.example.siateacher.LoginActivity" />
-        <activity android:name="com.example.siateacher.chatActivity" />
+        <activity android:name="com.example.siateacher.chatActivity"/>
         <activity
             android:name="com.example.siateacher.usersActivity"
             android:parentActivityName="com.example.siateacher.MainActivity" />
@@ -27,12 +28,12 @@
         <activity
             android:name="com.example.siateacher.settingsActivity"
             android:parentActivityName="com.example.siateacher.MainActivity" />
-        <activity android:name="com.example.siateacher.createQuizActivity" />
-        <activity android:name="com.example.siateacher.quizActivity" />
-        <activity android:name="com.example.siateacher.faqActivity" />
-        <activity android:name="com.example.siateacher.textActivity" />
-        <activity android:name="com.example.siateacher.LoginActivity" />
-        <activity android:name="com.example.siateacher.RegisterActivity" />
+        <activity android:name="com.example.siateacher.faqActivity"
+            android:parentActivityName="com.example.siateacher.MainActivity"/>
+        <activity android:name="com.example.siateacher.LoginActivity"
+            android:parentActivityName="com.example.siateacher.TeacherLoginRegActivity"/>
+        <activity android:name="com.example.siateacher.RegisterActivity"
+            android:parentActivityName="com.example.siateacher.TeacherLoginRegActivity" />
         <activity android:name="com.example.siateacher.MainActivity"/>
 
         <activity android:name="com.example.siateacher.StartActivity" >
@@ -48,6 +49,9 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+
+        <service android:name="com.example.siateacher.UnCatchTaskService"
+            android:stopWithTask="false" />
     </application>
 
 </manifest>

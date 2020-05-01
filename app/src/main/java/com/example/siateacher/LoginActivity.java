@@ -39,20 +39,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(); //instantiating firebase authentication
 
+        //create toolbar
         mToolbar = (Toolbar) findViewById(R.id.login_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Say It App - Teacher Login");
 
+        //creating a new progress dialog
         mLoginProgress = new ProgressDialog(this);
 
+        //initialising the variables
         mLoginEmail = (TextInputLayout) findViewById(R.id.loginPage_email);
         mLoginPw = (TextInputLayout) findViewById(R.id.loginPage_pw);
         mLoginButton = (Button) findViewById(R.id.loginPage_loginButton);
         forgot_password = findViewById(R.id.forgot_password);
 
+        //if forgot button is clicked, open reset password activity
         forgot_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //..? how to add back button -- parent act
+        /*
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,20 +73,26 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(back_intent);
             }
         });
+        */
 
         mLoginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                //get the text of the  email and password and store them as a string variable
                 String email = mLoginEmail.getEditText().getText().toString();
                 String password = mLoginPw.getEditText().getText().toString();
 
+                //if email/password is not empty,
                 if(!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)){
-
+                    //show progress dialog title
                     mLoginProgress.setTitle("Logging in");
+                    //body message of prog diaglog
                     mLoginProgress.setMessage("Please wait while we check your details");
+                    //even if user clicks outside the dialog box, progress log will not be dismissed
                     mLoginProgress.setCanceledOnTouchOutside(false);
                     mLoginProgress.show();
 
+                    //calls loginUser function
                     loginUser(email, password);
                 }
             }
@@ -93,17 +105,17 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    mLoginProgress.dismiss();
+                if(task.isSuccessful()){ //if task is successful,
+                    mLoginProgress.dismiss(); //dismiss the progress dialog
 
-                    Intent mainIntent = new Intent (LoginActivity.this, MainActivity.class);
-                    //mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Intent mainIntent = new Intent (LoginActivity.this, MainActivity.class); //intent method to take user from the login to main activity
                     startActivity(mainIntent);
                     finish();
-                } else{
-                    mLoginProgress.hide();
-                    // If sign in fails, display a message to the user.
 
+                } else{
+                    //if log in fails, hide the progress log,
+                    mLoginProgress.hide();
+                    // and display a message to the user.
                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 }

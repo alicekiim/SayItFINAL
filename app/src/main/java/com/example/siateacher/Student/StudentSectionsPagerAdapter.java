@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.siateacher.chatsFragment;
 import com.example.siateacher.quizFragment;
 
 public class StudentSectionsPagerAdapter extends FragmentPagerAdapter {
@@ -17,7 +16,7 @@ public class StudentSectionsPagerAdapter extends FragmentPagerAdapter {
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment getItem(int position) { //each fragment is instantiated for each tab
 
         switch (position) {
             case 0:
@@ -38,11 +37,11 @@ public class StudentSectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return 2;
-    }
+    } //no. of tabs
 
     @Nullable
     @Override
-    public CharSequence getPageTitle(int position) {
+    public CharSequence getPageTitle(int position) { //naming the tabs
         switch (position){
             case 0:
                 return "home";

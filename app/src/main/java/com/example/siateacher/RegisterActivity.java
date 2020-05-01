@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,13 +18,17 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    //create variables
     private TextInputLayout mName;
     private TextInputLayout mEmail;
     private TextInputLayout mPw;
@@ -33,16 +38,18 @@ public class RegisterActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
-    //progress dialog
     private ProgressDialog mRegProgress;
 
     private FirebaseAuth mAuth;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //instantiating the firebase auth
         mAuth = FirebaseAuth.getInstance();
 
         //toolbar
@@ -51,18 +58,12 @@ public class RegisterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Say It App - Teacher Registration");
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent back_intent = new Intent(RegisterActivity.this, StartActivity.class);
-                startActivity(back_intent);
-            }
-        });
 
         //progress dialog
         mRegProgress = new ProgressDialog(this);
 
 
+        //initialise the variables
         mName = findViewById(R.id.regPage_name);
         mEmail = findViewById(R.id.regPage_email);
         mPw = findViewById(R.id.regPage_pw);
@@ -71,17 +72,22 @@ public class RegisterActivity extends AppCompatActivity {
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //get the text and store it in a string variable
                 String display_name = mName.getEditText().getText().toString();
                 String email = mEmail.getEditText().getText().toString();
                 String password = mPw.getEditText().getText().toString();
 
+                // if statement to check the textboxes are not empty
                 if (!TextUtils.isEmpty(display_name) || !TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
+                    //display progress bar
                     mRegProgress.setTitle("Registering your teacher account");
                     mRegProgress.setMessage("We are creating your account");
                     mRegProgress.setCanceledOnTouchOutside(false);
                     mRegProgress.show();
+                    //call register_user function
                     register_user(display_name, email, password);
                 } else if (password.length()<6){
+                    //if password is less than 6 characters, show error message
                     Toast.makeText(RegisterActivity.this, "Password must be 7 characters or longer.",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -93,32 +99,43 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register_user(final String display_name, String email, String password) {
+        //function to create new user via email and password
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful()) { //if successful
 
+                            //get the current user
                             FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+                            //get their uid
                             String userid = current_user.getUid();
 
+                            long temp1 = System.currentTimeMillis();
+                            String temp2 =String.valueOf(temp1).substring(4);
+                            int numChildren = Integer.parseInt(temp2);
+
+                            //store the database reference of the current user
                             mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userid);
 
-                            HashMap<String, String> userMap = new HashMap<>();
+                            //store details in hash map, by adding values to the child nodes in db
+                            HashMap<String, Object> userMap = new HashMap<>();
                             userMap.put("id", userid);
                             userMap.put("name", display_name);
-                            userMap.put("status", "Hi I am online.");
+                            userMap.put("status", "no chat target");
                             userMap.put("image", "default");
+                            userMap.put("num", numChildren);
 
 
                             mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    if(task.isSuccessful()){
-                                        mRegProgress.dismiss();
+                                    if(task.isSuccessful()){//if successful
+                                        mRegProgress.dismiss();//dismiss prog bar
 
                                         // Sign in success, update UI with the signed-in user's information
+                                        //and redirect to main activity
                                         Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
                                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(mainIntent);
@@ -127,11 +144,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
 
-                        } else {
+                        } else {//If sign in fails..
 
-                            mRegProgress.hide();
+                            mRegProgress.hide(); //..hide prog bar
                             // If sign in fails, display a message to the user.
 
+                            //.. and display a message to the user
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 

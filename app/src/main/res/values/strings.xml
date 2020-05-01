@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SIATeacher</string>
+    <string name="app_name">SayIt! App</string>
     <string name="create_a_new_account">Create a new account</string>
     <string name="email">Email</string>
     <string name="display_name">Display name</string>

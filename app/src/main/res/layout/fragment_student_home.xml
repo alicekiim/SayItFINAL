@@ -17,4 +17,11 @@
 
         android:text="Start Chat" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="give info here on what th app is about" />
+
 </FrameLayout>

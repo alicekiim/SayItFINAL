@@ -37,10 +37,12 @@ public class statusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
 
-        //instantiate fb
+        //instantiate firebase, get current user
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        //get id as string
         String current_uid = mCurrentUser.getUid();
 
+        //getting the database reference for the current user
         mStatusDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
 
         mToolbar = (Toolbar) findViewById(R.id.status_bar);
@@ -48,13 +50,16 @@ public class statusActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Say It App - Activity Area");
 
+        //receive "status_value" from settingsActivity and store in string
         String status_value = getIntent().getStringExtra("status_value");
 
         mStatus= (TextInputLayout)findViewById(R.id.status_input);
         mSaveBtn = (Button)findViewById(R.id.statusPage_saveButton);
 
+        //set the inputted text to status_value
         mStatus.getEditText().setText(status_value);
 
+        //save button
         mSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,15 +70,17 @@ public class statusActivity extends AppCompatActivity {
                 mProgress.setMessage("Please wait.");
                 mProgress.show();
 
+                //set status value into string
                 String status = mStatus.getEditText().getText().toString();
 
+                //and store the status value into firebase database- in "status" node
                 mStatusDatabase.child("status").setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if(task.isSuccessful()){ //if its successful, dismiss the progress bar
                             mProgress.dismiss();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"there was an error", Toast.LENGTH_LONG).show();
+                        }else{//if not successful, show error
+                            Toast.makeText(getApplicationContext(),"There was an error uploading the status.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

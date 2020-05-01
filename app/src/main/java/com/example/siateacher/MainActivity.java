@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        // storing the toolbar in the toolbar variable
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Say It App - Teacher Area");
 
-// tabs
+        // storing the viewpager in the viewpager variable
         mViewPager = (ViewPager) findViewById(R.id.mainPage_tabPager);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -66,32 +67,44 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
 
+        //initialising the variables
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.name);
+
+        //startService(new Intent(this, UnCatchTaskService.class)); //task종료시점을 알기 위해 학생 초기화면에 startService 시작한다.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             //Go to login
         }
         else {
 
+            //get current user
             mfirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            //storing the database reference of the user
             mReference = FirebaseDatabase.getInstance().getReference("Users").child(mfirebaseUser.getUid());
 
             mReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //Get a DataSnapshot for the location at the specified relative path
                     Users user = dataSnapshot.getValue(Users.class);
 
+                    // if user is found
                     if(user != null) {
+
+                        //get their name
                         username.setText(user.getName());
-                        //if (user.getImage().equals("default")) {
+
+                        //get their profile image
                         if ("default".equals(user.getImage())) {
                             profile_image.setImageResource(R.mipmap.ic_launcher);
                         } else {
                             Glide.with(getApplicationContext()).load(user.getImage()).into(profile_image);
                         }
                     }else {
+                        //if username isn't found, put as blank
                         username.setText("");
+                        //if profile image isn't found, put in a default image
                         profile_image.setImageResource(R.mipmap.ic_launcher);
 
                     }
@@ -152,18 +165,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-//change this to switch
 
+        // takes user to account settings
         if(item.getItemId() == R.id.mainPage_accountsettingsButton){
             Intent settings_intent = new Intent(MainActivity.this, settingsActivity.class);
             startActivity(settings_intent);
+            startActivity(settings_intent);
         }
 
+        // takes user to faq page
         if(item.getItemId() == R.id.mainPage_faqButton){
             Intent faq_intent = new Intent(MainActivity.this, faqActivity.class);
             startActivity(faq_intent);
         }
 
+        //if user signs out, go back to start page
         if (item.getItemId() == R.id.mainPage_logoutButton) {
 
             FirebaseAuth.getInstance().signOut();

@@ -1,41 +1,65 @@
 package com.example.siateacher;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.siateacher.Student.StudentMainActivity;
 import com.example.siateacher.TeacherLoginRegActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 public class StartActivity extends AppCompatActivity {
 
+    //create variables
     private Button mTeacher;
     private Button mStudent;
-    private FirebaseUser firebaseUser;
+    private FirebaseUser mUser;
 
     // @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(firebaseUser != null) {//사용자 정보가 남아 있을경우 로그인화면이 아닌 로그인된 화면을 불러온다
-            Toast.makeText(getApplicationContext(), firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
-            if (firebaseUser.isAnonymous()) {//익명사용자체크(익명사용자면 학생화면,아니면 선생화면)
-                //backToStartPage();
-                Intent Smain_intent = new Intent(StartActivity.this, StudentMainActivity.class);
-                startActivity(Smain_intent);
-            }else{
-                Intent Tmain_intent = new Intent(StartActivity.this, MainActivity.class);
-                startActivity(Tmain_intent);
-            }
+        // Check if user is signed in (non-null) and update UI accordingly.
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(mUser != null){
+            //To retrieve the ID token from the client, make sure the user is signed in and then get the ID token from the signed-in user
+
+            //Check if the user is logged in.
+            mUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+
+                                if (mUser.isAnonymous()) {
+                                    //Anonymous user check
+                                    //show student screen if anonymous user..
+                                    Intent Smain_intent = new Intent(StartActivity.this, StudentMainActivity.class);
+                                    startActivity(Smain_intent);
+                                    finish();
+                                }else{ // if not anonymous, show teacher screen.
+                                    Intent Tmain_intent = new Intent(StartActivity.this, MainActivity.class);
+                                    startActivity(Tmain_intent);
+                                    finish();
+                                }
+                            } else {
+
+                            }
+                        }
+                    });
         }
+
     }
 
     @Override
@@ -52,7 +76,7 @@ public class StartActivity extends AppCompatActivity {
 
                 Intent reg_intent = new Intent(StartActivity.this, TeacherLoginRegActivity.class);
                 startActivity(reg_intent);
-                //finish();
+                finish();
 
             }
         });
@@ -63,10 +87,12 @@ public class StartActivity extends AppCompatActivity {
 
                 Intent login_intent = new Intent(StartActivity.this, StudentMainActivity.class);
                 startActivity(login_intent);
-                //finish();
+
+                finish();
 
             }
         });
 
     }
 }
+

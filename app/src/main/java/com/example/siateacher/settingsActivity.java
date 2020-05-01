@@ -70,6 +70,7 @@ public class settingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        //initialise the variables
         mDisplayImage = (CircleImageView) findViewById(R.id.settingsPage_image);
         mName = (TextView) findViewById(R.id.settingsPage_name);
         mStatus = (TextView) findViewById(R.id.settingsPage_status);
@@ -77,12 +78,16 @@ public class settingsActivity extends AppCompatActivity {
         mStatusButton = (Button) findViewById(R.id.settingPage_statusBtn);
         mImageButton = (Button) findViewById(R.id.settingPage_imageBtn);
 
+        //store the database reference for image
         mImageStorage = FirebaseStorage.getInstance().getReference();
 
+        //get current user
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        //store current users uid as string variable
         String current_uid = mCurrentUser.getUid();
 
+        //store the database reference of the current user
         mUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
 
         //toolbar
@@ -96,20 +101,19 @@ public class settingsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
 
-                //String name = dataSnapshot.child("name").getValue().toString();
-                //String image = dataSnapshot.child("image").getValue().toString();
-                //String status = dataSnapshot.child("status").getValue().toString();
-                //String thumb_image = dataSnapshot.child("thumb_image").toString();
-
-                //Users.class에 있는 정보들이라서 변경해줌
+                //get the name, image and status
                 String name = user.getName();
                 String image = user.getImage();
                 String status = user.getStatus();
 
+                //and set the name as name variable
                 mName.setText(name);
+                //and set the status as the status variable
                 mStatus.setText(status);
 
+                //and if the image does not equal default
                 if(!image.equals("default")){
+                    //load the unique image the user is using instead
                     Picasso.get().load(image).into(mDisplayImage);
                 }
             }
@@ -124,8 +128,10 @@ public class settingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //get the text and store it in a string variable
                 String status_value= mStatus.getText().toString();
 
+                //using putExtra(), to pass some information ("status_value") to the statusActivity
                 Intent status_intent = new Intent(settingsActivity.this, statusActivity.class);
                 status_intent.putExtra("status value", status_value);
                 startActivity(status_intent);
@@ -133,14 +139,19 @@ public class settingsActivity extends AppCompatActivity {
             }
         });
 
+        //set an onclicklistener for the image button
         mImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //new intent to pick image from gallery
                 Intent gallery_intent = new Intent();
+                //define type as images
                 gallery_intent.setType("image/*");
+                //this is to make sure to get content
                 gallery_intent.setAction(Intent.ACTION_GET_CONTENT);
 
+                //createChooser opens gallery. set title as "select image"
                 startActivityForResult(Intent.createChooser(gallery_intent, "SELECT IMAGE"), GALLERY_PICK);
 
             }
@@ -154,8 +165,9 @@ public class settingsActivity extends AppCompatActivity {
 
         if (imageUri != null){
 
-            final StorageReference filepath = mImageStorage.child("profile_images").child(mCurrentUser.getUid()+".jpg");//Storage 넣어줄 경로
-            uploadTask = filepath.putFile(imageUri);//선택한이미지 주소를 넣어준다
+            final StorageReference filepath = mImageStorage.child("profile_images").child(mCurrentUser.getUid()+".jpg");//Storage path
+            uploadTask = filepath.putFile(imageUri);//put file in selected image address/path
+
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -168,16 +180,20 @@ public class settingsActivity extends AppCompatActivity {
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()){
-                        Uri downloadUri = task.getResult();// 업로드가 성공하면 해당 Uri 를 받아온다
+                    if (task.isSuccessful()){//If the upload is successful..
+                        //..the corresponding Uri is received
+                        //URI(Uniform resource identifier) as its name suggests is used to identify resource(whether it be a page of text, a video or sound clip, a still or animated image, or a program)
+                        Uri downloadUri = task.getResult();
+                        //..then converted to string
                         String mUri = downloadUri.toString();
 
-                        //Users의 image upload한 주소를 넣어준다
+                        //storing the database reference of the current user to store the users image
                         mUserDB = FirebaseDatabase.getInstance().getReference("Users").child(mCurrentUser.getUid());
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("image", ""+mUri);
                         mUserDB.updateChildren(map);
 
+                        //and dismiss the progress dialog once upload is complete
                         pd.dismiss();
                     } else {
                         Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
@@ -187,11 +203,14 @@ public class settingsActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    //if image upload fails, show an error message
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    //and dismiss the progress dialog
                     pd.dismiss();
                 }
             });
         } else {
+            //else is image is not selected, show error message
             Toast.makeText(getApplicationContext(), "No image selected", Toast.LENGTH_SHORT).show();
         }
     }
@@ -199,12 +218,13 @@ public class settingsActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //if image is selected successfully
         if (requestCode == GALLERY_PICK && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             imageUri = data.getData();
-            CropImage.activity(imageUri)//갤러리에서 선택한 이미지주소를 넣어준다
-                    .setCropShape( CropImageView . CropShape . OVAL )//자르기 창모양 변경(네모->원)
-                    .setAspectRatio(1, 1)
+            CropImage.activity(imageUri)//Enter the image address, selected from the gallery
+                    .setCropShape( CropImageView . CropShape . OVAL )//Change crop window shape to oval
+                    .setAspectRatio(1, 1) //1:1 so its a perfect circle
                     .start(this);
 
         }
@@ -212,9 +232,9 @@ public class settingsActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            imageUri =result.getUri(); //CropImage 한 이미지 주소 를 넣어준다
+            imageUri =result.getUri(); //enter the image path of the cropped image
 
-            uploadImage();
+            uploadImage(); //and upload the cropped image
         }
     }
 

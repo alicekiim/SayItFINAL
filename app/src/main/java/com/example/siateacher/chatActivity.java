@@ -1,18 +1,30 @@
 package com.example.siateacher;
 
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,24 +65,28 @@ public class chatActivity extends AppCompatActivity {
     FirebaseUser fuser;
 
     DatabaseReference reference;
+    DatabaseReference mReference;
 
-    ArrayList<String> Ckeylist = new ArrayList<String>(); //채팅내용 삭제때 사용하기 위한 리스트
+    ArrayList<String> Ckeylist = new ArrayList<String>(); //List to use when deleting chat contents
 
-    private String classification; //채팅창에 들어온 사람이 학생인지 선생인지 구분하기 위한 intent 값을 담을 변수
-    private String offUserid; //채팅상대 아이디 intent 값을 담을 변수
-    private boolean removeButton =false; //채팅을 뒤로가기로 나간건지 mEndChat버튼으로 나간건지 구분
-    private boolean chatEmpty =true; //채팅 내용이 있는지를 구분 false로 변경되면 채팅 내용이 있었다가 학생쪽이 삭제하거나 로그아웃한것이기 때문에 채팅창(선생쪽)에서 나간다
+    private String classification; //Variable to hold the intent value to distinguish whether the person who entered the chat window is a student or a teacher
+    private String offUserid; //Variable to hold the chat partner ID intent value
+    private boolean endButton =false; //variable to determine whether the user left the chat room via end chat button or back button
+    private boolean chatContent =true; //determines if there is chat content, if false- if chatContent becomes false (so the student logged out or ended chat, causing the chat content to be deleted), it will make the teacher leave the chat page too
+    private String mStatus; //Chat partner's status value
+
+    private NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        //create toolbar
         mToolbar = findViewById(R.id.chat_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -78,7 +94,6 @@ public class chatActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        //mine
         profile_image = findViewById(R.id.profile_image);
         username = findViewById(R.id.name);
 
@@ -86,28 +101,54 @@ public class chatActivity extends AppCompatActivity {
         chatbox = findViewById(R.id.chatbox);
         mEndChat = findViewById(R.id.button4);
         intent = getIntent();
-        final String userid = intent.getStringExtra("id"); //채팅상대 Uid
+
+        // retrieve the id data from StudentHomeFragment/chatsFragment using "id"
+        final String userid = intent.getStringExtra("id");
+
+        // retrieve the classification data
+        //determines if the entered user is a student or teacher
         classification = intent.getStringExtra("classification");
 
-        offUserid = userid; //protected void onPause() 에서 사용하기위해 userid를 offUserid에 넣어줌
-        fuser = FirebaseAuth.getInstance().getCurrentUser(); //로그인한 User정보
+        //copy of userid for use in onPause()
+        offUserid = userid;
 
-        //my own uid
+        //gets current user
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(classification.equals("teacher")) {//채팅창에 상대정보를 보여주기위해
+
+        if(classification.equals("teacher")) {//If you are teacher user..
+            //get teacher id
+            reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+            //make their status "online"
+            reference.child("status").setValue("online");
+            //get the id of the student
             reference = FirebaseDatabase.getInstance().getReference("Students").child(userid);
         }else {//equals("student")
+            //get students id
+            reference = FirebaseDatabase.getInstance().getReference("Students").child(fuser.getUid());
+            //make their status "online"
+            reference.child("status").setValue("online");
+            //get the id of the teacher user
             reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
-            //학생이 선생채팅창에 들어가면 ChatList에 해당선생 아래 학생정보를 넣어준다(선생화면에서 학생list 가져오기 위한 추가)
+
+            //in firebase database
+            //----student id (fuser.getUid())
+            //------id, image, name, status
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
             HashMap<String, String> chatuserMap = new HashMap<>();
-            chatuserMap.put("id", fuser.getUid());
+            chatuserMap.put("id", fuser.getUid()); //student id
             chatuserMap.put("image", "default");
             chatuserMap.put("name", "student");
             chatuserMap.put("status", "online");
+            //if a student starts chat with teacher, input the student details under the teacher's ID under chatlist
+            //Chatlist
+            //--teacher id (userid)
+            //----student id (fuser.getUid())
+            //------id, image, name, status
             ref.child("ChatList").child(userid).child(fuser.getUid()).setValue(chatuserMap);
         }
 
+        //only allow sending of message if there is content
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,76 +164,99 @@ public class chatActivity extends AppCompatActivity {
             }
         });
 
+        //if click end chat button
         mEndChat.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 AlertDialog.Builder builder = new AlertDialog.Builder(chatActivity.this);
 
-                builder.setTitle("chat delete"); //AlertDialog title
-                builder.setMessage("Are you sure you want to end chat? The chat will be deleted."); //AlertDialog Message
+                //AlertDialog title
+                builder.setTitle("chat delete");
+                //AlertDialog Message
+                builder.setMessage("Are you sure you want to end chat? The chat will be deleted.");
 
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
                     @Override
-                    public void onClick(DialogInterface dialog, int id) {//yes click
+                    public void onClick(DialogInterface dialog, int id) {
+                        //(if click endchat + select yes)
 
+                        //point to "Chats" in firebase database
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
-                        //채팅 내용을 읽어올때 Ckeylist에 키값을 저장하여 닫기 버튼 클릭할때 채팅내용을 삭제한다.
+
+                        //read the chat content, store the values in "Ckeylist"
                         for (int i = 0; i < Ckeylist.size(); i++){
                             if (Ckeylist.get(i) != null) {
+                                //and delete the chat contents
                                 ref.child(Ckeylist.get(i)).removeValue();
                             }
                         }
-                        //닫기 버튼 클릭할때 ChatList에서 학생의 정보를 삭제한다.
+                        //(if click endchat + select yes)
+                        //if classified as a student..
                         if(classification.equals("student")) {
+                            //..get the database reference of the user in "Chatlist"..
                             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("ChatList").child(userid);
+                            //..and delete the users information.
                             ref2.child(fuser.getUid()).removeValue();
 
+                            //(therefore, clicking the endchat button will delete the student's information from the ChatList.)
+
                         }else{
-                            //선생의경우 삭제버튼으로 나갔어도 학생은 안나가고 있을경우가 있기때문에 주석처리함
-                            //DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("ChatList").child(fuser.getUid());
-                            //ref2.child(userid).removeValue();
+
                         }
-                        //protected void onPause() 에서 삭제버튼으로 화면을 나갔을경우 ChatList의 학생정보도 삭제되기때문에 status->offline 를 변경하면 안됨
-                        removeButton = true ;
+
+                        //user has left the screen via "end chat" button, so change to "true"
+                        endButton = true ;
+
                         finish();
+
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener(){//no click
+                //if "no" selected
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        //Toast.makeText(getApplicationContext(), "NO", Toast.LENGTH_SHORT).show();
+                        //do nothing
                     }
                 });
 
                 AlertDialog alertDialog = builder.create();
-
                 alertDialog.show();
             }
 
         });
 
 
-
-
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) { // 값이 없는지 있는지를 체크
+
+                //if datasnapshot exists
+                if(dataSnapshot.exists()) {
+                    //get username of user
                     Users user = dataSnapshot.getValue(Users.class);
                     username.setText(user.getName());
 
+                    //get image of user
                     if (user.getImage().equals("default")) {
+                        //load default
                         profile_image.setImageResource(R.mipmap.ic_launcher);
                     } else {
+                        Activity activity = chatActivity.this;
+                        if (activity.isFinishing())
+                            return;
+                        //load unique image user selected
                         Glide.with(chatActivity.this).load(user.getImage()).into(profile_image);
                     }
-
+                    //get the users status (online/offline)
+                    mStatus = user.getStatus();
                     readMessages(fuser.getUid(), userid, user.getImage());
                 }else{
-                    finish(); //선생 채팅창의경우 학생이 로그아웃 하면 채팅창 종료
+                    Log.e("Error", "chatActivity218"+classification);
+
+                    //if no datasnapshot exists, close the chat page
+                    finish();
                 }
             }
             @Override
@@ -200,57 +264,154 @@ public class chatActivity extends AppCompatActivity {
 
             }
         });
+
+        //Change the isseen value when the other side reads the chat
+        seenMessage(userid);
     }
+
+    private void seenMessage(final String userid){
+        //get reference to Chats in database
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    //get a snapshot of chat class
+                    Chat chat = snapshot.getValue(Chat.class);
+                    //if message receiver equals current user and message sender equals
+                    if (chat.getReceiver().equals(fuser.getUid()) && chat.getSender().equals(userid)){
+                        HashMap<String,Object> hashmap = new HashMap<>();
+                        //if read, set to true
+                        hashmap.put("isseen", true);
+                        //update hashmap
+                        snapshot.getRef().updateChildren(hashmap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
     private void sendMessage(String sender, String receiver, String message) {
 
+        //get reference to database
+        //A DatabaseReference represents a specific location in database and can be used for reading or writing data to that database location.
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
+        //create hashmap
         HashMap<String, Object> hashmap = new HashMap<>();
         hashmap.put("sender", sender);
         hashmap.put("receiver", receiver);
         hashmap.put("message", message);
-        hashmap.put("isseen", false);
 
+        //If the message receiver's status value is the sender's ID.. (meaning that the receiver has entered the chat room with the sender)
+        if(fuser.getUid().equals(mStatus)) {
+            //.. the message is marked as read.
+            hashmap.put("isseen", true);
+
+            //else if the receiver's status is a different value other than the sender's ID (such as "online", "offline" or "no chat target")..
+        }else{
+            //..the message is marked as delivered.
+            hashmap.put("isseen", false);//
+        }
+
+        //the hashmap info (isseen, sender, reciever, message) is added to "Chats" in firebase database
         ref.child("Chats").push().setValue(hashmap);
+
     }
 
     private void readMessages (final String myid, final String userid, final String imageurl){
+
+        //list to store chat
         mchat = new ArrayList<>();
 
+        //get reference to "chats" in database
+        //A DatabaseReference represents a specific location in database and can be used for reading or writing data to that database location.
         DatabaseReference chtReference = FirebaseDatabase.getInstance().getReference("Chats");
         chtReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mchat.clear();
                 Ckeylist.clear();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     if(dataSnapshot.exists()) {
                         Chat chat = snapshot.getValue(Chat.class);
-                        //if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
+
+                        //if current users ID and chatting partner's ID exists..
                         if (myid != null && userid != null) {
-                            if (myid.equals(chat.getReceiver()) && userid.equals(chat.getSender()) || userid.equals(chat.getReceiver()) && myid.equals(chat.getSender())) {
+
+                            //and if current user's ID is the message receiver AND the chatting partner's ID is the sender
+                            //OR
+                            //if current user's ID is the sender AND if the chatting partner ID is the message receiver
+                            if (myid.equals(chat.getReceiver()) && userid.equals(chat.getSender()) || myid.equals(chat.getSender()) && userid.equals(chat.getReceiver()) ) {
+
+                                //and, if the message receiver's status value is the sender's ID.. (meaning that the receiver has entered the chat room with the sender)
+                                if(fuser.getUid().equals(mStatus)) {
+
+                                    //Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                //add message to the mchat list
                                 mchat.add(chat);
-                                Ckeylist.add(snapshot.getKey()); //채팅내용 삭제를 위한 리스트
-                                chatEmpty = false;//닫기버튼으로 삭제를 한건지 처음 채팅방에 들어가서 내용이 없는건지 판단
+                                //add key to list so the message can be deleted later
+                                Ckeylist.add(snapshot.getKey());
+                                //determines whether chat was deleted with the endchat button or if its empty bc they entered a new chat
+                                chatContent = false;
+
+
                             }
                         }
 
+                        //pass the message and image through MessageAdapter
                         messageAdapter = new MessageAdapter(getApplicationContext(), mchat, imageurl);
+                        //and display it using the appropriate layout (which is on the right side if sender)
                         recyclerView.setAdapter(messageAdapter);
+
                     }
 
 
                 }
+
+                //Added because input contents are obscured when the keyboard window comes up on the chat screen. Added SoftKeyboardDectectorView.java file
+                final SoftKeyboardDectectorView softKeyboardDecector = new SoftKeyboardDectectorView(chatActivity.this);
+                addContentView(softKeyboardDecector, new FrameLayout.LayoutParams(-1, -1));
+
+                softKeyboardDecector.setOnShownKeyboard(new SoftKeyboardDectectorView.OnShownKeyboardListener() {
+                    @Override
+                    public void onShowSoftKeyboard() {
+
+                        //When the keyboard appears, the page scrolls up automatically so the last input of the chat window is displayed above the keyboard and therefore visible
+                        recyclerView.scrollToPosition(mchat.size()-1);
+                    }
+
+                });
+
+                //if the chat list size is 0, ie there are no messages
                 if(mchat.size()== 0){
-                    //mEndChat.setEnabled(false);
+
+                    //set chat layout
                     messageAdapter = new MessageAdapter(getApplicationContext(), mchat, imageurl);
                     recyclerView.setAdapter(messageAdapter);
-                    if(classification.equals("teacher") && chatEmpty == false) {
-                        finish(); //학생이 닫기버튼을 눌렀을때 선생 채팅창 닫기
+
+                    //and if chatContent is false for the teacher (so the student logged out or ended chat from their end)..
+                    if(classification.equals("teacher") && chatContent == false) {
+
+                        //..close the chat window on the teachers screen.
+                        finish();
                     }
+
+                    //else if chat messages still exist
                 }else{
-                    //mEndChat.setEnabled(true);
+                    //make the page scroll automatically so the last input of the chat window is displayed above the keyboard
+                    recyclerView.scrollToPosition(mchat.size()-1);
                 }
             }
 
@@ -261,25 +422,145 @@ public class chatActivity extends AppCompatActivity {
         });
     }
 
+    //back button
+    public void onBackPressed() {
+
+        //if the user is a student and messages exist in the chat
+        if(classification.equals("student") && mchat.size()!= 0) {
+
+            //show alert dialog asking if they want to end and delete the chat
+            AlertDialog.Builder builder = new AlertDialog.Builder(chatActivity.this);
+            builder.setTitle("chat delete"); //AlertDialog title
+            builder.setMessage("Are you sure you want to end chat? The chat will be deleted."); //AlertDialog Message
+
+            //if yes is selected
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                    //get reference to "chats" in database
+                    //A DatabaseReference represents a specific location in database and can be used for reading or writing data to that database location.
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
+
+                    //When reading the chat contents, save the key value in the Ckeylist
+
+                    //read the chat contents and
+                    for (int i = 0; i < Ckeylist.size(); i++) {
+                        if (Ckeylist.get(i) != null) {
+                            //delete the chat contents when clicking the endchat button.
+                            ref.child(Ckeylist.get(i)).removeValue();
+
+
+                        }
+                    }
+                    //delete the student's information from the ChatList database
+                    if (classification.equals("student")) {
+                        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("ChatList").child(offUserid);
+                        ref2.child(fuser.getUid()).removeValue();
+
+                    } else {
+                        //If there is no chat content, just exit without deleting
+                    }
+
+                    Log.e("Error", "chatActivity367"+classification);
+
+                    finish();
+                }
+            });
+
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {//no clicked
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    //do nothing, stay on chat page
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+
+            alertDialog.show();
+
+        }else{
+            Log.e("Error", "chatActivity383"+classification);
+            if(classification.equals("student")){
+                //if you click back button and there are no messages sent yet, it only deletes senders ID from ChatList.
+                // (no need to have alert dialog because there are no messages to delete)
+                DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("ChatList").child(offUserid);
+                ref2.child(fuser.getUid()).removeValue();
+            }
+
+            finish();
+        }
+    }
+
+
+
+
     @Override
     protected void onPause() {
         super.onPause();
-        //focus를 잃었을경우 학생상태를 offline 로 변경해 선생창에 리스트에서 안보이게 한다
-        if(classification.equals("student") && removeButton == false) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList").child(offUserid).child(fuser.getUid());
-            reference.child("status").setValue("offline");
-        }
 
+        if(fuser.getUid() != null) {
+            //change status to "non chat target" when user is not actively in the chat page/window
+            if (classification.equals("student")) {
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Students").child(fuser.getUid());
+                reference.child("status").setValue("no chat target");
+
+
+            } else if (classification.equals("teacher")) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+                reference.child("status").setValue("no chat target");
+            }
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //focus를 다시 얻었을경우 학생상태를 online 로 변경해 선생창에 리스트에서 보이게 한다
-        if(classification.equals("student") && removeButton == false) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList").child(offUserid).child(fuser.getUid());
-            reference.child("status").setValue("online");
+        //when active in the chat page/window
+        if(classification.equals("student")) {
+            //show the teachers id in the students status
+            mReference = FirebaseDatabase.getInstance().getReference("Users").child(offUserid);
+        } else if (classification.equals("teacher")) {
+            //show the students id in the teachers status
+            mReference = FirebaseDatabase.getInstance().getReference("Students").child(offUserid);
         }
 
+        //The number of times you call the singleEventValueListener, it get triggers once every time it is called.
+        //(While on the other hand addValueEventListener() fetches the value every time the value is changed in your firebase realtime DB node to which it is referencing.)
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Users user = dataSnapshot.getValue(Users.class);
+
+                if (user != null) {
+                    //show the teachers id in the students status
+                    if (classification.equals("student")) {
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Students").child(fuser.getUid());
+                        reference.child("status").setValue(offUserid);
+
+                        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.cancel(user.getNum());//stop the notification from appearing (bc they're already in the chat window, there's no point in having a notif pop up)
+                    }
+                    //show the students id in the teachers status
+                    else if (classification.equals("teacher")) {
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+                        reference.child("status").setValue(offUserid);
+
+                        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.cancel(user.getNum());//stop the notification from appearing (bc they're already in the chat window, there's no point in having a notif pop up)
+
+                    }
+                    if(fuser.getUid().equals(user.getStatus())) {
+
+                        //If sender's ID is in the recievers status (meaning that they are in the chat window and has read the message), call seenMessage()
+                        seenMessage(offUserid);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }

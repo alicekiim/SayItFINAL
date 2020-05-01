@@ -7,19 +7,25 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.siateacher.R;
+import com.example.siateacher.UnCatchTaskService;
 import com.example.siateacher.faqActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class StudentMainActivity extends AppCompatActivity {
 
@@ -29,7 +35,10 @@ public class StudentMainActivity extends AppCompatActivity {
     private StudentSectionsPagerAdapter mStudentSectionsPagerAdapter;
     private TabLayout mTabLayout;;
 
-    private String mAuth; //로그인한 학생 아이디
+    private String mAuth;
+
+    private FirebaseUser mfirebaseUser;
+    private DatabaseReference mReference;
 
 
     @Override
@@ -37,20 +46,33 @@ public class StudentMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
 
+        //create toolbar
         mToolbar = (Toolbar) findViewById(R.id.student_main_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Say It App - Students");
 
-        // tabs
+        //set up ViewPager
         mViewPager = (ViewPager) findViewById(R.id.StudentMain_tabPager);
+        //pager adapter flip between the fragments
         mStudentSectionsPagerAdapter = new StudentSectionsPagerAdapter(getSupportFragmentManager());
-
         mViewPager.setAdapter(mStudentSectionsPagerAdapter);
 
+        //populate the tabs
         mTabLayout = (TabLayout) findViewById(R.id.StudentTabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
+
+        //startService: Request that a given application service be started
+        // In order to know when the task is finished, startService starts on the initial screen of the student.
+        startService(new Intent(this, UnCatchTaskService.class));
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            //Go to login
+            Log.e("Error", "TTTTTTTTTTTTTTTTTTT== null");
+        }
+        else {
+
+        }
 
     }
 
@@ -66,20 +88,28 @@ public class StudentMainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-        mAuth = FirebaseAuth.getInstance().getCurrentUser().getUid(); //로그인한 사용자 Uid
 
+        //current user id
+        mAuth = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //if click on logout button
         if(item.getItemId() == R.id.studentMainPage_logoutButton){
 
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList");//Database [ChatList] read
-            reference.addValueEventListener(new ValueEventListener() {
+            //read [ChatList] in firebase database
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList");
+
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                    //get reference to chatlist in database
                     DatabaseReference delRef = FirebaseDatabase.getInstance().getReference("ChatList");
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String user = snapshot.getKey(); //ChatList 키값(선생)을 읽어온다
+                        //Read ChatList key value (teacher)
+                        String user = snapshot.getKey();
 
-                        delRef.child(user).child(mAuth).removeValue(); //Database [ChatList] 학생정보 삭제
+                        //Delete student information from Database [ChatList]
+                        delRef.child(user).child(mAuth).removeValue();
                     }
                 }
                 @Override
@@ -88,18 +118,27 @@ public class StudentMainActivity extends AppCompatActivity {
                 }
             });
 
-            FirebaseAuth.getInstance().getCurrentUser().delete(); //익명사용자 Authentication 에서 삭제
+            FirebaseAuth.getInstance().getCurrentUser().delete(); //Removed anonymous user details from firebase authentication
 
+            //point to [Students] database
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Students");
-            ref.child(mAuth).removeValue(); //익명사용자 Database [Students]에서 삭제
+            //Deletes anonymous user from database [Students]
+            ref.child(mAuth).removeValue();
+
+            //logs out student user
+            FirebaseAuth.getInstance().signOut();
+
+            //remove app from running apps
+            finishAndRemoveTask();
+
+            //terminates and exits system
+            System.exit(0);
 
 
-            FirebaseAuth.getInstance().signOut(); //사용자 로그아웃
-
-            finishAffinity(); // APP 종료
 
         }
 
+        //if click on faq button, take them to faq activity
         if(item.getItemId() == R.id.studentMainPage_faqButton){
             Intent faq_intent = new Intent(StudentMainActivity.this, faqActivity.class);
             startActivity(faq_intent);

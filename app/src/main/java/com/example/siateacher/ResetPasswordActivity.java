@@ -34,19 +34,24 @@ public class ResetPasswordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Say It App - Reset Password");
 
+        //initialise the variables
         mEmail = findViewById(R.id.resetPw_email);
         mResetButton = findViewById(R.id.resetPw_sendButton);
 
+        //instantiating the firebase auth
         mAuth = FirebaseAuth.getInstance();
 
         mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //get the email and store it in a string variable
                 String email = mEmail.getEditText().getText().toString();
 
+                //if email inputted is blank, show error message
                 if (email.equals("")){
                     Toast.makeText(ResetPasswordActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 } else {
+                    //if email is inputted correctly, send email to user's email with instructions on how to reset password
                     mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
