@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Student.StudentFaqActivity">
+
+    <include layout="@layout/bar_layout" android:id="@+id/student_faq_page_toolbar"/>
+
+    <TextView
+        android:id="@+id/faqAnswer3"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="212dp"
+        android:text="Yes you can! Once you press &quot;end chat&quot; you can input your email for the chat log to be sent to. Don't worry we don't keep a record of your emails."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,6 +63,7 @@ public class StudentHomeFragment extends Fragment {
         This can happen, for example, if the user was deleted on another device and the local token has not refreshed.
         In this case, you may get a valid user getCurrentUser but subsequent calls to authenticated resources will fail.
         getCurrentUser might also return null because the auth object has not finished initializing.
+
         If you attach an AuthStateListener you will get a callback every time the underlying token state changes.
         This can be useful to react to edge cases like those mentioned above.*/
     private boolean AuthState =false;//위에 내용 때문에 추가함 ^
@@ -91,7 +92,6 @@ public class StudentHomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         mMainView = inflater.inflate(R.layout.fragment_student_home, container, false);
-
         mStartChatButton = mMainView.findViewById(R.id.student_startchat);
 
         return mMainView;
@@ -102,7 +102,6 @@ public class StudentHomeFragment extends Fragment {
 
         //addAuthStateListener is called when there is a change in the authentication state.
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-
         mStartChatButton = mMainView.findViewById(R.id.student_startchat);
 
         //click start chat button
@@ -122,7 +121,7 @@ public class StudentHomeFragment extends Fragment {
                 //pass student "id" to chatActivity. Value of id is: mUsers.get(mListCnt).getId()
                 chat_intent.putExtra("id", mUsers.get(mListCnt).getId());
                 //pass "classification" to chatActivity. the value is "student"
-                //Value to check whether the student or the teacher entered the chat
+                //purpose is to check whether the student or the teacher entered the chat
                 chat_intent.putExtra("classification", "student");
                 //send user to chat activity
                 getContext().startActivity(chat_intent);
@@ -187,8 +186,6 @@ public class StudentHomeFragment extends Fragment {
                             String temp2 =String.valueOf(temp1).substring(4); //convert the time into string
                             int numChildren = Integer.parseInt(temp2); //convert string to int
 
-                            //Log.e("Error", "mmmmmmmmmmmmmm - "+numChildren);
-
                             //store the database reference of the current student user
                             mDatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(studentsid);
 
@@ -198,7 +195,7 @@ public class StudentHomeFragment extends Fragment {
                             userMap.put("image", "default");
                             userMap.put("name", "Student");
                             userMap.put("status", "online");
-                            userMap.put("num", numChildren); //create a unique serial number for use in notifications
+                            userMap.put("num", numChildren); //creates a unique serial number for use in notifications
 
                             mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -223,7 +220,7 @@ public class StudentHomeFragment extends Fragment {
                 });
     }
 
-    // reads list of teachers (which is stored in database under "users")
+    //reads list of teachers (which is stored in database under "users")
     private void readUsers() {
 
         //point to users database

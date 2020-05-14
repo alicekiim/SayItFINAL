@@ -211,7 +211,7 @@ public class settingsActivity extends AppCompatActivity {
             });
         } else {
             //else is image is not selected, show error message
-            Toast.makeText(getApplicationContext(), "No image selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No image selected, try again.", Toast.LENGTH_SHORT).show();
         }
     }
 

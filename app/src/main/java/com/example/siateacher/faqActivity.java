@@ -22,6 +22,8 @@ public class faqActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Say It App - FAQ's");
 
+       /*
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,6 +31,8 @@ public class faqActivity extends AppCompatActivity {
                 startActivity(back_intent);
             }
         });
+
+        */
 
     }
 }

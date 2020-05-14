@@ -49,7 +49,7 @@ public class StudentMainActivity extends AppCompatActivity {
         //create toolbar
         mToolbar = (Toolbar) findViewById(R.id.student_main_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Say It App - Students");
+        getSupportActionBar().setTitle("Say It App - Student");
 
         //set up ViewPager
         mViewPager = (ViewPager) findViewById(R.id.StudentMain_tabPager);
@@ -118,7 +118,7 @@ public class StudentMainActivity extends AppCompatActivity {
                 }
             });
 
-            FirebaseAuth.getInstance().getCurrentUser().delete(); //Removed anonymous user details from firebase authentication
+            FirebaseAuth.getInstance().getCurrentUser().delete(); //Removes anonymous user details from firebase authentication
 
             //point to [Students] database
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Students");
@@ -140,7 +140,7 @@ public class StudentMainActivity extends AppCompatActivity {
 
         //if click on faq button, take them to faq activity
         if(item.getItemId() == R.id.studentMainPage_faqButton){
-            Intent faq_intent = new Intent(StudentMainActivity.this, faqActivity.class);
+            Intent faq_intent = new Intent(StudentMainActivity.this, StudentFaqActivity.class);
             startActivity(faq_intent);
         }
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Student.StudentHomeFragment">
 
 
@@ -17,11 +18,36 @@
 
         android:text="Start Chat" />
 
+
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/faqTitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="give info here on what th app is about" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="128dp"
+        android:text="Hey there!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/faqAnswer1"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="158dp"
+        android:text="Welcome to SayIt!App, an app where you can chat to a trusted adult about any issues you have. Don't worry, you are anonymous and we don't keep any records of your chats. Once you log out, everything will be deleted." />
+
+    <TextView
+        android:id="@+id/faqAnswer2"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="228dp"
+        android:text="Press the START CHAT button to start. We're here to help you with any concerns!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </FrameLayout>
