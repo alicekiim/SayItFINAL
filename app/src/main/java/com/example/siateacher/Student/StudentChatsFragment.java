@@ -39,8 +39,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StudentHomeFragment extends Fragment {
+public class StudentChatsFragment extends Fragment {
 
+    //creating variables
     private List<Users> mUsers;  //list of Users class
     private List<Chat> mchat;
 
@@ -58,19 +59,13 @@ public class StudentHomeFragment extends Fragment {
     private Notification.Builder notification;
 
     private String CHANNEL_ID;
-    /*
-        There are some cases where getCurrentUser will return a non-null FirebaseUser but the underlying token is not valid.
-        This can happen, for example, if the user was deleted on another device and the local token has not refreshed.
-        In this case, you may get a valid user getCurrentUser but subsequent calls to authenticated resources will fail.
-        getCurrentUser might also return null because the auth object has not finished initializing.
-
-        If you attach an AuthStateListener you will get a callback every time the underlying token state changes.
-        This can be useful to react to edge cases like those mentioned above.*/
-    private boolean AuthState =false;//위에 내용 때문에 추가함 ^
 
 
+    //If you attach an AuthStateListener you will get a callback every time the underlying token state changes.
+    private boolean AuthState =false;
 
-    public StudentHomeFragment() {
+
+    public StudentChatsFragment() {
         // Required empty public constructor
     }
 
@@ -152,7 +147,7 @@ public class StudentHomeFragment extends Fragment {
 
                 //if user exists
                 if (firebaseUser != null) {
-                    //make auth state as true (and activate "start chat" button)
+                    //make auth state as true (and thus activates "start chat" button)
                     AuthState = true;
 
                 } else {
@@ -184,7 +179,7 @@ public class StudentHomeFragment extends Fragment {
 
                             long temp1 = System.currentTimeMillis(); //Returns the current current date and time in milliseconds.
                             String temp2 =String.valueOf(temp1).substring(4); //convert the time into string
-                            int numChildren = Integer.parseInt(temp2); //convert string to int
+                            int num = Integer.parseInt(temp2); //convert string to int
 
                             //store the database reference of the current student user
                             mDatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(studentsid);
@@ -195,7 +190,7 @@ public class StudentHomeFragment extends Fragment {
                             userMap.put("image", "default");
                             userMap.put("name", "Student");
                             userMap.put("status", "online");
-                            userMap.put("num", numChildren); //creates a unique serial number for use in notifications
+                            userMap.put("num", num); //creates a unique serial number for use in notifications
 
                             mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -207,7 +202,7 @@ public class StudentHomeFragment extends Fragment {
                                         //Load list of teachers to use for chat
                                         readUsers();
                                         //reads chat for unread messages --> in order to create notification
-                                        readCaht();
+                                        readChatForNotification();
                                     }
                                 }
                             });
@@ -234,16 +229,12 @@ public class StudentHomeFragment extends Fragment {
                 //retrieve value of users class
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
+                    //get snapshot of users class
                     Users user = snapshot.getValue(Users.class);
 
+                    //add the user
                     mUsers.add(user);
 
-                    /*
-                    //[and if current user doesn't equal the id of the users in User database]
-                    if (!mFirebaseAuth.getUid().equals(user.getId())) {
-                        //add the user
-                        mUsers.add(user);
-                    }*/
                 }
 
                 //Activate the start chat button (ONLY activates the chat button once getting user information)
@@ -256,7 +247,7 @@ public class StudentHomeFragment extends Fragment {
         });
     }
 
-    private void readCaht() { //reads chat for notifications
+    private void readChatForNotification() { //reads chat for notifications
 
         //point to chats in database
         DatabaseReference chtReference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -271,8 +262,10 @@ public class StudentHomeFragment extends Fragment {
 
                 //if user id exists
                 if (mFirebaseAuth.getUid() != null) {
-                    //Get only the unread data
+
+                    //"if isseen==false" - therfore, gets only the unread data.
                     if (mFirebaseAuth.getUid().equals(chat.getReceiver()) && chat.isIsseen() == false) {
+
                         String mMessage;
                         String mId;
 
@@ -285,7 +278,7 @@ public class StudentHomeFragment extends Fragment {
                         chatNotification(mId, mMessage);
 
                     } else {
-                        //Log.e("Error", "tttt - ");
+
                     }
                 }
             }
@@ -330,7 +323,7 @@ public class StudentHomeFragment extends Fragment {
             DatabaseReference mReference = FirebaseDatabase.getInstance().getReference("Users").child(notifyId);
 
             //The number of times you call the singleEventValueListener, it get triggers once every time it is called.
-            //(While on the other hand addValueEventListener() fetches the value every time the value is changed in your firebase realtime DB node to which it is referencing.)
+            //**(While on the other hand addValueEventListener() fetches the value every time the value is changed in your firebase realtime DB node to which it is referencing.)
             mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

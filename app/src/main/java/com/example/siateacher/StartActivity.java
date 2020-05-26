@@ -4,15 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.siateacher.Student.StudentMainActivity;
-import com.example.siateacher.TeacherLoginRegActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,7 +45,7 @@ public class StartActivity extends AppCompatActivity {
                                     startActivity(Smain_intent);
                                     finish();
                                 }else{ // if not anonymous, show teacher screen.
-                                    Intent Tmain_intent = new Intent(StartActivity.this, MainActivity.class);
+                                    Intent Tmain_intent = new Intent(StartActivity.this, TeacherMainActivity.class);
                                     startActivity(Tmain_intent);
                                     finish();
                                 }
@@ -74,7 +70,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent reg_intent = new Intent(StartActivity.this, TeacherLoginRegActivity.class);
+                Intent reg_intent = new Intent(StartActivity.this, TeacherLoginActivity.class);
                 startActivity(reg_intent);
                 finish();
 

@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class TeacherMainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser mfirebaseUser;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private androidx.appcompat.widget.Toolbar mToolbar;
 
     private ViewPager mViewPager;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private TeacherSectionsPagerAdapter mTeacherSectionsPagerAdapter;
 
     private TabLayout mTabLayout;
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_teacher_main);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
         // storing the viewpager in the viewpager variable
         mViewPager = (ViewPager) findViewById(R.id.mainPage_tabPager);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mTeacherSectionsPagerAdapter = new TeacherSectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mTeacherSectionsPagerAdapter);
 
         mTabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -117,36 +117,14 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //  mFAQButton = (Button) findViewById(R.id.mainPage_faqButton);
-
-/*        mChatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent chat_intent = new Intent(MainActivity.this, chatActivity.class);
-                startActivity(chat_intent);
-
-            }
-        });*/
 
 
     }
 
-    /* @Override
-     public void onStart() {
-         super.onStart();
-         // Check if user is signed in (non-null) and update UI accordingly.
-         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-         if (currentUser == null) {
-             backToStartPage();
-         }
-     }
- */
     private void backToStartPage() {
-        Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
+        Intent startIntent = new Intent(TeacherMainActivity.this, StartActivity.class);
         startActivity(startIntent);
         finish();
     }
@@ -168,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
 
         // takes user to account settings
         if(item.getItemId() == R.id.mainPage_accountsettingsButton){
-            Intent settings_intent = new Intent(MainActivity.this, settingsActivity.class);
+            Intent settings_intent = new Intent(TeacherMainActivity.this, TeacherSettingsActivity.class);
             startActivity(settings_intent);
             startActivity(settings_intent);
         }
 
         // takes user to faq page
         if(item.getItemId() == R.id.mainPage_faqButton){
-            Intent faq_intent = new Intent(MainActivity.this, faqActivity.class);
+            Intent faq_intent = new Intent(TeacherMainActivity.this, TeacherFaqActivity.class);
             startActivity(faq_intent);
         }
 

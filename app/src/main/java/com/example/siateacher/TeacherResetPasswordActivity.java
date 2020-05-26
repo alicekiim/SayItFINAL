@@ -14,7 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class TeacherResetPasswordActivity extends AppCompatActivity {
 
     private androidx.appcompat.widget.Toolbar mToolbar;
 
@@ -26,7 +26,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reset_password);
+        setContentView(R.layout.activity_teacher_reset_password);
 
         //toolbar
         mToolbar = findViewById(R.id.resetPw_toolbar);
@@ -49,18 +49,18 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
                 //if email inputted is blank, show error message
                 if (email.equals("")){
-                    Toast.makeText(ResetPasswordActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TeacherResetPasswordActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 } else {
                     //if email is inputted correctly, send email to user's email with instructions on how to reset password
                     mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(ResetPasswordActivity.this, "Please check your email for password reset directions.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
+                                Toast.makeText(TeacherResetPasswordActivity.this, "Please check your email for password reset directions.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(TeacherResetPasswordActivity.this, TeacherLoginActivity.class));
                             } else {
                                 String error = task.getException().getMessage();
-                                Toast.makeText(ResetPasswordActivity.this, error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TeacherResetPasswordActivity.this, error, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

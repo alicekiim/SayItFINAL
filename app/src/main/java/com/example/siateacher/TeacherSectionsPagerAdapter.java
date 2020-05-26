@@ -6,9 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    public SectionsPagerAdapter(@NonNull FragmentManager fm) {
+class TeacherSectionsPagerAdapter extends FragmentPagerAdapter {
+
+    public TeacherSectionsPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 
@@ -18,12 +19,12 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                chatsFragment chaFragment = new chatsFragment();
-                return chaFragment;
+                TeacherChatsFragment chatFrag = new TeacherChatsFragment();
+                return chatFrag;
 
             case 1:
-                quizFragment quizFragment = new quizFragment();
-                return quizFragment;
+                quizFragment quizFrag = new quizFragment();
+                return quizFrag;
 
             default:
                 return null;

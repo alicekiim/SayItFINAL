@@ -102,7 +102,7 @@ public class chatActivity extends AppCompatActivity {
         mEndChat = findViewById(R.id.button4);
         intent = getIntent();
 
-        // retrieve the id data from StudentHomeFragment/chatsFragment using "id"
+        // retrieve the id data from StudentChatsFragment/TeacherChatsFragment using "id"
         final String userid = intent.getStringExtra("id");
 
         // retrieve the classification data

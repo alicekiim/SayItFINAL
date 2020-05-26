@@ -1,7 +1,6 @@
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -9,7 +8,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,7 +36,9 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class settingsActivity extends AppCompatActivity {
+//Credit to KODDEV as his code was used as a framework for this page
+
+public class TeacherSettingsActivity extends AppCompatActivity {
 
     private DatabaseReference mUserDB;
     private FirebaseUser mCurrentUser;
@@ -47,7 +47,7 @@ public class settingsActivity extends AppCompatActivity {
     private TextView mName;
     private TextView mStatus;
 
-    private Button mStatusButton;
+
     private Button mImageButton;
 
     private static final int GALLERY_PICK=1;
@@ -68,14 +68,12 @@ public class settingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_teacher_settings);
 
         //initialise the variables
         mDisplayImage = (CircleImageView) findViewById(R.id.settingsPage_image);
         mName = (TextView) findViewById(R.id.settingsPage_name);
-        mStatus = (TextView) findViewById(R.id.settingsPage_status);
 
-        mStatusButton = (Button) findViewById(R.id.settingPage_statusBtn);
         mImageButton = (Button) findViewById(R.id.settingPage_imageBtn);
 
         //store the database reference for image
@@ -104,12 +102,11 @@ public class settingsActivity extends AppCompatActivity {
                 //get the name, image and status
                 String name = user.getName();
                 String image = user.getImage();
-                String status = user.getStatus();
+
 
                 //and set the name as name variable
                 mName.setText(name);
-                //and set the status as the status variable
-                mStatus.setText(status);
+
 
                 //and if the image does not equal default
                 if(!image.equals("default")){
@@ -124,20 +121,7 @@ public class settingsActivity extends AppCompatActivity {
             }
         });
 
-        mStatusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                //get the text and store it in a string variable
-                String status_value= mStatus.getText().toString();
-
-                //using putExtra(), to pass some information ("status_value") to the statusActivity
-                Intent status_intent = new Intent(settingsActivity.this, statusActivity.class);
-                status_intent.putExtra("status value", status_value);
-                startActivity(status_intent);
-
-            }
-        });
 
         //set an onclicklistener for the image button
         mImageButton.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +143,7 @@ public class settingsActivity extends AppCompatActivity {
 
     }
     private void uploadImage(){
-        final ProgressDialog pd = new ProgressDialog(settingsActivity.this);
+        final ProgressDialog pd = new ProgressDialog(TeacherSettingsActivity.this);
         pd.setMessage("Uploading");
         pd.show();
 

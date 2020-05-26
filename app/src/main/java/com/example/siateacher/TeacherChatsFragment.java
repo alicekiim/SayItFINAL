@@ -3,7 +3,6 @@ package com.example.siateacher;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
-import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,12 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +29,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -43,7 +38,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class chatsFragment extends Fragment {
+public class TeacherChatsFragment extends Fragment {
 
     private RecyclerView mUsersListRecycler;
     private usersActivity usersActivity;
@@ -59,7 +54,7 @@ public class chatsFragment extends Fragment {
 
     private String CHANNEL_ID;
 
-    public chatsFragment(){
+    public TeacherChatsFragment(){
 
     }
 
@@ -77,7 +72,7 @@ public class chatsFragment extends Fragment {
         createNotificationChannel();
         //Load list of teachers to use for chat
         readUsers();
-        readCaht();
+        readChatForNotification();
     }
 
     @Override
@@ -85,7 +80,7 @@ public class chatsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        mMainView = inflater.inflate(R.layout.fragment_chats, container, false);
+        mMainView = inflater.inflate(R.layout.fragment_teacher_chats, container, false);
         mUsersListRecycler = mMainView.findViewById(R.id.fragment_chat);
         mUsersListRecycler.setHasFixedSize(true);
         mUsersListRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -122,14 +117,14 @@ public class chatsFragment extends Fragment {
     }
 
     //reads chat for notifications
-    private void readCaht() {
+    private void readChatForNotification() {
 
         //point to chats in database
         DatabaseReference chtReference = FirebaseDatabase.getInstance().getReference("Chats");
 
         chtReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {//?? onChildAdded: 처음 호출시 전체를 읽고 값 추가시 읽어온다
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
 
                 Chat chat = dataSnapshot.getValue(Chat.class);
 
@@ -148,7 +143,7 @@ public class chatsFragment extends Fragment {
                         chatNotification(mId, mMessage);
 
                     } else {
-                       // Log.e("Error", "tttt - ");
+
                     }
                 }
             }

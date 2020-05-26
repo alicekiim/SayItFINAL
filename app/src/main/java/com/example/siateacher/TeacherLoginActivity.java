@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+public class TeacherLoginActivity extends AppCompatActivity {
 
     private androidx.appcompat.widget.Toolbar mToolbar;
 
@@ -32,12 +32,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private ProgressDialog mLoginProgress;
 
+    private Button mRegBtn;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_teacher_login);
 
         mAuth = FirebaseAuth.getInstance(); //instantiating firebase authentication
 
@@ -60,20 +61,36 @@ public class LoginActivity extends AppCompatActivity {
         forgot_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+                startActivity(new Intent(TeacherLoginActivity.this, TeacherResetPasswordActivity.class));
             }
         });
 
         //..? how to add back button -- parent act
-        /*
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent back_intent = new Intent(LoginActivity.this, StartActivity.class);
+                Intent back_intent = new Intent(TeacherLoginActivity.this, StartActivity.class);
                 startActivity(back_intent);
             }
         });
-        */
+
+
+
+
+        mRegBtn = (Button) findViewById(R.id.startPage_regButton);
+
+
+        //send to register activity
+        mRegBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent reg_intent = new Intent(TeacherLoginActivity.this, TeacherRegisterActivity.class);
+                startActivity(reg_intent);
+
+            }
+        });
 
         mLoginButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -108,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()){ //if task is successful,
                     mLoginProgress.dismiss(); //dismiss the progress dialog
 
-                    Intent mainIntent = new Intent (LoginActivity.this, MainActivity.class); //intent method to take user from the login to main activity
+                    Intent mainIntent = new Intent (TeacherLoginActivity.this, TeacherMainActivity.class); //intent method to take user from the login to main activity
                     startActivity(mainIntent);
                     finish();
 
@@ -116,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                     //if log in fails, hide the progress log,
                     mLoginProgress.hide();
                     // and display a message to the user.
-                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                    Toast.makeText(TeacherLoginActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 }
             }

@@ -14,34 +14,39 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Student.StudentFaqActivity"
             android:parentActivityName=".Student.StudentMainActivity" />
+
         <activity android:name=".Student.StudentMainActivity" />
+
         <activity
-            android:name=".TeacherLoginRegActivity"
-            android:parentActivityName=".StartActivity" />
-        <activity
-            android:name=".ResetPasswordActivity"
-            android:parentActivityName=".LoginActivity" />
+            android:name=".TeacherResetPasswordActivity"
+            android:parentActivityName=".TeacherLoginActivity" />
+
         <activity android:name=".chatActivity" />
+
         <activity
             android:name=".usersActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".TeacherMainActivity" />
+
         <activity
-            android:name=".statusActivity"
-            android:parentActivityName=".settingsActivity" />
+            android:name=".TeacherSettingsActivity"
+            android:parentActivityName=".TeacherMainActivity" />
+
         <activity
-            android:name=".settingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".TeacherFaqActivity"
+            android:parentActivityName=".TeacherMainActivity" />
+
         <activity
-            android:name=".faqActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".TeacherLoginActivity"
+            android:parentActivityName=".StartActivity" />
+
         <activity
-            android:name=".LoginActivity"
-            android:parentActivityName=".TeacherLoginRegActivity" />
-        <activity
-            android:name=".RegisterActivity"
-            android:parentActivityName=".TeacherLoginRegActivity" />
-        <activity android:name=".MainActivity" />
+            android:name=".TeacherRegisterActivity"
+            android:parentActivityName=".TeacherLoginActivity" />
+
+        <activity android:name=".TeacherMainActivity" />
+
         <activity android:name=".StartActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

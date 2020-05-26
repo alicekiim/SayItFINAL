@@ -20,7 +20,7 @@ public class StudentSectionsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                StudentHomeFragment reqFragment = new StudentHomeFragment();
+                StudentChatsFragment reqFragment = new StudentChatsFragment();
                 return reqFragment;
 
             case 1:

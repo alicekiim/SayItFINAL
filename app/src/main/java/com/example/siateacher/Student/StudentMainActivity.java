@@ -7,7 +7,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 
 import com.example.siateacher.R;
 import com.example.siateacher.UnCatchTaskService;
-import com.example.siateacher.faqActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,8 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
 
 public class StudentMainActivity extends AppCompatActivity {
 
@@ -118,7 +114,8 @@ public class StudentMainActivity extends AppCompatActivity {
                 }
             });
 
-            FirebaseAuth.getInstance().getCurrentUser().delete(); //Removes anonymous user details from firebase authentication
+            //Removes anonymous user details from firebase authentication
+            FirebaseAuth.getInstance().getCurrentUser().delete();
 
             //point to [Students] database
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Students");

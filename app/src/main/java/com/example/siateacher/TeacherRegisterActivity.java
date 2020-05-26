@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,15 +17,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
-public class RegisterActivity extends AppCompatActivity {
+public class TeacherRegisterActivity extends AppCompatActivity {
 
     //create variables
     private TextInputLayout mName;
@@ -47,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_teacher_register);
 
         //instantiating the firebase auth
         mAuth = FirebaseAuth.getInstance();
@@ -88,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                     register_user(display_name, email, password);
                 } else if (password.length()<6){
                     //if password is less than 6 characters, show error message
-                    Toast.makeText(RegisterActivity.this, "Password must be 7 characters or longer.",
+                    Toast.makeText(TeacherRegisterActivity.this, "Password must be 7 characters or longer.",
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -111,9 +107,9 @@ public class RegisterActivity extends AppCompatActivity {
                             //get their uid
                             String userid = current_user.getUid();
 
-                            long temp1 = System.currentTimeMillis();
-                            String temp2 =String.valueOf(temp1).substring(4);
-                            int numChildren = Integer.parseInt(temp2);
+                            long temp1 = System.currentTimeMillis(); //Returns the current current date and time in milliseconds.
+                            String temp2 =String.valueOf(temp1).substring(4); //convert the time into string
+                            int num = Integer.parseInt(temp2); //convert string to int
 
                             //store the database reference of the current user
                             mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userid);
@@ -124,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userMap.put("name", display_name);
                             userMap.put("status", "no chat target");
                             userMap.put("image", "default");
-                            userMap.put("num", numChildren);
+                            userMap.put("num", num); //creates a unique serial number for use in notifications
 
 
                             mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -136,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                         // Sign in success, update UI with the signed-in user's information
                                         //and redirect to main activity
-                                        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                        Intent mainIntent = new Intent(TeacherRegisterActivity.this, TeacherMainActivity.class);
                                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(mainIntent);
                                         finish();
@@ -150,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
 
                             //.. and display a message to the user
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                            Toast.makeText(TeacherRegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 
                         }
