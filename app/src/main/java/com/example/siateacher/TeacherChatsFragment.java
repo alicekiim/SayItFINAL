@@ -73,6 +73,8 @@ public class TeacherChatsFragment extends Fragment {
         //Load list of teachers to use for chat
         readUsers();
         readChatForNotification();
+
+
     }
 
     @Override
@@ -176,8 +178,12 @@ public class TeacherChatsFragment extends Fragment {
             //Enter the registered channel ID.
             // Used in NotificationCompat.Builder.
             CHANNEL_ID = notificationManager.getNotificationChannel("channel").getId();
+
         }
+
     }
+
+
 
     private void chatNotification(final String notifyId, final String mMessage) {
 
@@ -228,8 +234,15 @@ public class TeacherChatsFragment extends Fragment {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
+
         }
+
     }
+
+
+
+    //"what is it's purpose?"
+    //I thought that maybe it could be used in future improvements. It could be used to find statistics on how long the teacher user spend time with each student.
 
     public void onPause() {
         super.onPause();

@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-//Credit to KODDEV as his code was used as a framework for this page
+//Credit to KODDEV (https://github.com/KODDevYouTube/ChatAppTutorial/tree/master/app) as his code was used as a framework for this page
 
 public class TeacherSettingsActivity extends AppCompatActivity {
 
@@ -142,6 +142,17 @@ public class TeacherSettingsActivity extends AppCompatActivity {
         });
 
     }
+
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // NavUtils.navigateUpFromSameTask(this);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    };
+
     private void uploadImage(){
         final ProgressDialog pd = new ProgressDialog(TeacherSettingsActivity.this);
         pd.setMessage("Uploading");
@@ -221,6 +232,8 @@ public class TeacherSettingsActivity extends AppCompatActivity {
             uploadImage(); //and upload the cropped image
         }
     }
+
+
 
 
 }

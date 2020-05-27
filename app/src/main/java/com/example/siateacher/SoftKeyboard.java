@@ -6,17 +6,20 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class SoftKeyboardDectectorView extends View {
+
+//code sourced from Link2me at https://link2me.tistory.com/1524
+
+public class SoftKeyboard extends View {
 
     private boolean mShownKeyboard;
     private OnShownKeyboardListener mOnShownSoftKeyboard;
     private OnHiddenKeyboardListener onHiddenSoftKeyboard;
 
-    public SoftKeyboardDectectorView(Context context) {
+    public SoftKeyboard(Context context) {
         this(context, null);
     }
 
-    public SoftKeyboardDectectorView(Context context, AttributeSet attrs) {
+    public SoftKeyboard(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

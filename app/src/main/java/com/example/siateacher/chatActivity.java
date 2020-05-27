@@ -1,15 +1,10 @@
 package com.example.siateacher;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,10 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,7 +98,7 @@ public class chatActivity extends AppCompatActivity {
         // retrieve the id data from StudentChatsFragment/TeacherChatsFragment using "id"
         final String userid = intent.getStringExtra("id");
 
-        // retrieve the classification data
+        //retrieve the classification data
         //determines if the entered user is a student or teacher
         classification = intent.getStringExtra("classification");
 
@@ -171,7 +164,7 @@ public class chatActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(chatActivity.this);
 
                 //AlertDialog title
-                builder.setTitle("chat delete");
+                builder.setTitle("End Chat");
                 //AlertDialog Message
                 builder.setMessage("Are you sure you want to end chat? The chat will be deleted.");
 
@@ -228,6 +221,8 @@ public class chatActivity extends AppCompatActivity {
         });
 
 
+
+        //retrieve user's image and status if chat is engaged
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -252,8 +247,9 @@ public class chatActivity extends AppCompatActivity {
                     //get the users status (online/offline)
                     mStatus = user.getStatus();
                     readMessages(fuser.getUid(), userid, user.getImage());
+
                 }else{
-                    Log.e("Error", "chatActivity218"+classification);
+                    //Log.e("Error", "chatActivity249"+classification);
 
                     //if no datasnapshot exists, close the chat page
                     finish();
@@ -269,6 +265,7 @@ public class chatActivity extends AppCompatActivity {
         seenMessage(userid);
     }
 
+    //when message is seen by chat partner..
     private void seenMessage(final String userid){
         //get reference to Chats in database
         reference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -298,6 +295,7 @@ public class chatActivity extends AppCompatActivity {
     }
 
 
+    //when sending message..
     private void sendMessage(String sender, String receiver, String message) {
 
         //get reference to database
@@ -326,6 +324,7 @@ public class chatActivity extends AppCompatActivity {
 
     }
 
+    //when
     private void readMessages (final String myid, final String userid, final String imageurl){
 
         //list to store chat
@@ -337,6 +336,7 @@ public class chatActivity extends AppCompatActivity {
         chtReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //clear to make sure previous data is not still left in the array list
                 mchat.clear();
                 Ckeylist.clear();
 
@@ -354,14 +354,15 @@ public class chatActivity extends AppCompatActivity {
 
                                 //and, if the message receiver's status value is the sender's ID.. (meaning that the receiver has entered the chat room with the sender)
                                 if(fuser.getUid().equals(mStatus)) {
+                                    //do nothing
 
-                                    //Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), "working", Toast.LENGTH_SHORT).show();
 
                                 }
 
-                                //add message to the mchat list
+                                //..add message to the mchat list;
                                 mchat.add(chat);
-                                //add key to list so the message can be deleted later
+                                //add key to list so the message can be deleted later.
                                 Ckeylist.add(snapshot.getKey());
                                 //determines whether chat was deleted with the endchat button or if its empty bc they entered a new chat
                                 chatContent = false;
@@ -380,11 +381,13 @@ public class chatActivity extends AppCompatActivity {
 
                 }
 
-                //Added because input contents are obscured when the keyboard window comes up on the chat screen. Added SoftKeyboardDectectorView.java file
-                final SoftKeyboardDectectorView softKeyboardDecector = new SoftKeyboardDectectorView(chatActivity.this);
-                addContentView(softKeyboardDecector, new FrameLayout.LayoutParams(-1, -1));
+                //code sourced from Link2me at https://link2me.tistory.com/1524
 
-                softKeyboardDecector.setOnShownKeyboard(new SoftKeyboardDectectorView.OnShownKeyboardListener() {
+                //Added because input contents are obscured when the keyboard window comes up on the chat screen
+                final SoftKeyboard softKeyboardDetector = new SoftKeyboard(chatActivity.this);
+                addContentView(softKeyboardDetector, new FrameLayout.LayoutParams(-1, -1));
+
+                softKeyboardDetector.setOnShownKeyboard(new SoftKeyboard.OnShownKeyboardListener() {
                     @Override
                     public void onShowSoftKeyboard() {
 
@@ -462,7 +465,7 @@ public class chatActivity extends AppCompatActivity {
                         //If there is no chat content, just exit without deleting
                     }
 
-                    Log.e("Error", "chatActivity367"+classification);
+                    //Log.e("Error", "chatActivity367"+classification);
 
                     finish();
                 }
@@ -480,7 +483,7 @@ public class chatActivity extends AppCompatActivity {
             alertDialog.show();
 
         }else{
-            Log.e("Error", "chatActivity383"+classification);
+            //Log.e("Error", "chatActivity383"+classification);
             if(classification.equals("student")){
                 //if you click back button and there are no messages sent yet, it only deletes senders ID from ChatList.
                 // (no need to have alert dialog because there are no messages to delete)

@@ -148,7 +148,6 @@ public class TeacherMainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.mainPage_accountsettingsButton){
             Intent settings_intent = new Intent(TeacherMainActivity.this, TeacherSettingsActivity.class);
             startActivity(settings_intent);
-            startActivity(settings_intent);
         }
 
         // takes user to faq page
@@ -165,8 +164,9 @@ public class TeacherMainActivity extends AppCompatActivity {
 
         }
 
+
+
         return true;
     }
-
 
 }
