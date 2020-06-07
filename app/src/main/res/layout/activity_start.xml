@@ -9,40 +9,36 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="278dp"
-        android:layout_height="407dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="256dp"
+        android:layout_height="155dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="67dp"
-        android:layout_marginTop="-79dp"
-        android:layout_marginEnd="66dp"
+        android:layout_marginTop="42dp"
         android:rotation="0"
-        app:srcCompat="@drawable/logo2" />
+        app:srcCompat="@drawable/logo_bg1" />
 
     <Button
         android:id="@+id/iam_teacher"
-        android:layout_width="407dp"
-        android:layout_height="211dp"
-
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
         android:layout_above="@+id/iam_student"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="1dp"
+        android:textStyle="bold"
         android:background="#469AE9"
         android:text="I am a teacher"
-        android:textColor="#FF8400"
+        android:textColor="#000000"
         android:textSize="36sp" />
 
     <Button
         android:id="@+id/iam_student"
-
-        android:layout_width="407dp"
-        android:layout_height="211dp"
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"
+        android:textStyle="bold"
         android:background="#FF8400"
         android:text="I am a student"
-        android:textColor="#469AE9"
+        android:textColor="#000000"
         android:textSize="36sp" />
 </RelativeLayout>

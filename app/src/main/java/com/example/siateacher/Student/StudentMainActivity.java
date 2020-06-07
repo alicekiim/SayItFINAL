@@ -94,6 +94,8 @@ public class StudentMainActivity extends AppCompatActivity {
             //read [ChatList] in firebase database
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList");
 
+            //The number of times you call the singleEventValueListener, it get triggers once every time it is called.
+            //**(While on the other hand addValueEventListener() fetches the value every time the value is changed in your firebase realtime DB node to which it is referencing.)
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

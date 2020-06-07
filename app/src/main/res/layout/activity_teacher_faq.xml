@@ -1,42 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TeacherFaqActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <include layout="@layout/bar_layout" android:id="@+id/faq_page_toolbar"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="85dp"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:rotation="0"
+            app:srcCompat="@drawable/logo_bg1" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/TeacherTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/faqTitle12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="459dp"
+        android:text="What is this app for?"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/faqAnswer3"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
-        android:text="Yes you can! Once you press &quot;end chat&quot; you can input your email for the chat log to be sent to. Don't worry we don't keep a record of your emails."
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="124dp"
+        android:text="Please speak to the appropriate staff leading this initiative at your school. For any technical issues, email us at sayit@mail.com."
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
-
-    <TextView
-        android:id="@+id/faqTitle3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Can I send a copy of the chat to myself?"
-        app:layout_constraintBottom_toTopOf="@+id/faqAnswer3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/faqAnswer2"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:text="Just you and the person you're chatting to on the app- don't worry, your chat log is wiped once you end the chat."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
 
@@ -44,18 +71,51 @@
         android:id="@+id/faqTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Who can see my chats?"
-        app:layout_constraintBottom_toTopOf="@+id/faqAnswer2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="191dp"
+        android:text="What is I have more questions?"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/faqAnswer2"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="234dp"
+        android:text="Just you and the person you're chatting to on the app- don't worry, your chat log is wiped once you end the chat."
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
 
     <TextView
         android:id="@+id/faqTitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="98dp"
         android:layout_marginTop="128dp"
-        android:text="What is this app for?"
+        android:layout_marginEnd="98dp"
+        android:layout_marginBottom="301dp"
+        android:text="Who can see my chats?"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,8 +125,13 @@
         android:id="@+id/faqAnswer1"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:text="For anything! If you need to report something but don't want to do it in person, or if you just want to talk! You can use this app how you like."
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="345dp"
+        android:text="This is a safe space for students to come to you for problems. Your role is to be a listening ear, and encourage them to speak to the appropriate people to get professional help if you think that is suitable."
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

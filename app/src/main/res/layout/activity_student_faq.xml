@@ -6,17 +6,107 @@
     android:layout_height="match_parent"
     tools:context=".Student.StudentFaqActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <include layout="@layout/bar_layout" android:id="@+id/student_faq_page_toolbar"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="85dp"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:rotation="0"
+            app:srcCompat="@drawable/logo_bg1" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/TeacherTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/faqAnswer2"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="108dp"
+        android:layout_marginRight="20dp"
+        android:text="Just you and the person you're chatting to on the app- don't worry, your chat log is wiped once you end the chat."
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
 
     <TextView
         android:id="@+id/faqAnswer3"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
-        android:text="Yes you can! Once you press &quot;end chat&quot; you can input your email for the chat log to be sent to. Don't worry we don't keep a record of your emails."
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="216dp"
+        android:layout_marginRight="20dp"
+        android:text="Just you and the person you're chatting to on the app- don't worry, your chat log is wiped once you end the chat."
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
+
+    <TextView
+        android:id="@+id/faqTitle3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Can I send a copy of the chat to myself?"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="376dp" />
+
+    <TextView
+        android:id="@+id/faqTitle4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Who can see my chats?"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="268dp" />
+
+    <TextView
+        android:id="@+id/faqTitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:text="What is this app for?"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/faqAnswer1"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="For anything! If you need to report something but don't want to do it in person, or if you just want to talk! You can use this app how you like."
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/faqTitle1" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

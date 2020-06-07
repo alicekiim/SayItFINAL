@@ -8,10 +8,30 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
+        android:id="@+id/link1"
         android:layout_width="match_parent"
-        android:layout_height="521dp"
+        android:layout_height="62dp"
         android:layout_marginTop="100dp"
-        android:text="@string/link"
-        android:id="@+id/link"/>
+        android:gravity="center_horizontal"
+        android:text="@string/quiz_1"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/link2"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:layout_marginTop="200dp"
+        android:gravity="center_horizontal"
+        android:text="@string/quiz_2"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/link3"
+        android:layout_width="match_parent"
+        android:layout_height="207dp"
+        android:layout_marginTop="300dp"
+        android:gravity="center_horizontal"
+        android:text="@string/quiz_3"
+        android:textSize="36sp" />
 
 </FrameLayout>

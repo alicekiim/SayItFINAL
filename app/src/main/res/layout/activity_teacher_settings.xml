@@ -6,30 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".TeacherSettingsActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <include layout="@layout/bar_layout" android:id="@+id/settings_bar"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="85dp"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:rotation="0"
+            app:srcCompat="@drawable/logo_bg1" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/TeacherTabLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/settingsPage_image"
-        android:layout_width="170dp"
-        android:layout_height="235dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="223dp"
+        android:layout_height="283dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="119dp"
-        android:layout_marginTop="47dp"
-        android:layout_marginEnd="121dp"
+        android:layout_marginTop="144dp"
         android:background="#00FFFFFF"
+        android:foregroundGravity="center_horizontal"
         android:src="@mipmap/ic_launcher" />
 
     <Button
         android:id="@+id/settingPage_imageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/settingsPage_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="227dp"
-        android:text="Change image" />
+        android:layout_marginTop="18dp"
+        android:background="#469AE9"
+        android:padding="15dp"
+        android:text="Change image"
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/settingsPage_name"
@@ -37,8 +62,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="280dp"
-        android:text="Name" />
+        android:layout_marginTop="416dp"
+        android:text="Name"
+        android:textSize="24sp" />
 
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class TeacherRegisterActivity extends AppCompatActivity {
         mPw = findViewById(R.id.regPage_pw);
         mCreateButton = findViewById(R.id.regPage_createButton);
 
+
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,8 +82,8 @@ public class TeacherRegisterActivity extends AppCompatActivity {
                     mRegProgress.setMessage("We are creating your account");
                     mRegProgress.setCanceledOnTouchOutside(false);
                     mRegProgress.show();
-                    //call register_user function
-                    register_user(display_name, email, password);
+                    //call registerTeacher function
+                    registerTeacher(display_name, email, password);
                 } else if (password.length()<6){
                     //if password is less than 6 characters, show error message
                     Toast.makeText(TeacherRegisterActivity.this, "Password must be 7 characters or longer.",
@@ -94,7 +96,7 @@ public class TeacherRegisterActivity extends AppCompatActivity {
 
     }
 
-    private void register_user(final String display_name, String email, String password) {
+    private void registerTeacher(final String display_name, String email, String password) {
         //function to create new user via email and password
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -154,5 +156,7 @@ public class TeacherRegisterActivity extends AppCompatActivity {
                     }
 
                 });
+
+
     }
 }

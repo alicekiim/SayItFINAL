@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+//code framework found and adapted from https://mine-it-record.tistory.com/228
 
 public class UnCatchTaskService extends Service {
 

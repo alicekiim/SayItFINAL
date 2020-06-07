@@ -7,8 +7,8 @@
     <string name="create_an_account">Create an account</string>
     <string name="log_out">Log Out</string>
     <string name="login">Login</string>
-    <string name="link">
-        <a href="http://igor.doc.gold.ac.uk/~mkim054/SIA/index.html"> my link </a>
+    <string name="link1">
+        <a href="http://igor.doc.gold.ac.uk/~mkim054/SIA/quiz1/index.html"> Quiz 1</a>
     </string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -18,4 +18,12 @@
     <string name="status">status</string>
     <string name="name">name</string>
     <string name="faq_s">FAQ\'s</string>
+    <string name="quiz_1">
+        <a href="http://igor.doc.gold.ac.uk/~mkim054/SIA/quiz1/index.html"> Quiz 1</a>
+    </string>
+    <string name="quiz_2">
+        <a href="http://igor.doc.gold.ac.uk/~mkim054/SIA/quiz2/index.html"> Quiz 2</a>
+    </string>
+    <string name="quiz_3">
+    <a href="http://igor.doc.gold.ac.uk/~mkim054/SIA/quiz3/index.html"> Quiz 3</a></string>
 </resources>

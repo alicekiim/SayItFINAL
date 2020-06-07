@@ -102,7 +102,8 @@ public class TeacherChatsFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Users user = snapshot.getValue(Users.class);
 
-                    //Show user only if the student's status value shows they are online and chatting with teacher (it'll say "status: [teacher id]" on firebase database)
+                    //Show user only if the student's status value shows they are online and chatting with teacher
+                    // (it'll say "status: [teacher id]" on firebase database)
                     if("online".equals(user.getStatus())) {
                         mUsers.add(user);
                     }

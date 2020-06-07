@@ -42,9 +42,7 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
         if(mUsers.size() !=0) {//if there ARE users in the database
 
             //get their name
-            //get their status
             holder.name.setText(user.getId());
-            holder.status.setText(user.getStatus());
 
             //and get their image, if no unique image exists, use default image
             if("default".equals(user.getImage())){
@@ -76,14 +74,12 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView name;
-        public TextView status;
         public ImageView profile_image;
 
         //view object created
         public ViewHolder (View itemView){
             super(itemView);
             name = itemView.findViewById(R.id.user_single_name);
-            status = itemView.findViewById(R.id.user_single_status);
             profile_image = itemView.findViewById(R.id.profile_image);
         }
     }

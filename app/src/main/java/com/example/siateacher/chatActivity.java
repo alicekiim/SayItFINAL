@@ -108,15 +108,16 @@ public class chatActivity extends AppCompatActivity {
         //gets current user
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        if(classification.equals("teacher")) {//If you are teacher user..
+//what is the purpose of this? explain
+        if(classification.equals("teacher")) {//If teacher user..
             //get teacher id
             reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
             //make their status "online"
             reference.child("status").setValue("online");
             //get the id of the student
             reference = FirebaseDatabase.getInstance().getReference("Students").child(userid);
-        }else {//equals("student")
+
+        }else {//if student user
             //get students id
             reference = FirebaseDatabase.getInstance().getReference("Students").child(fuser.getUid());
             //make their status "online"
@@ -124,7 +125,11 @@ public class chatActivity extends AppCompatActivity {
             //get the id of the teacher user
             reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-            //in firebase database
+
+            //..and create new hashmap
+            //when the student starts chat with teacher, input the student details under the teacher's ID under chatlist branch
+            //Chatlist
+            //--teacher id (userid)
             //----student id (fuser.getUid())
             //------id, image, name, status
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -133,11 +138,8 @@ public class chatActivity extends AppCompatActivity {
             chatuserMap.put("image", "default");
             chatuserMap.put("name", "student");
             chatuserMap.put("status", "online");
-            //if a student starts chat with teacher, input the student details under the teacher's ID under chatlist
-            //Chatlist
-            //--teacher id (userid)
-            //----student id (fuser.getUid())
-            //------id, image, name, status
+
+            //chatlist - teacher id - student id - id, image, name, status
             ref.child("ChatList").child(userid).child(fuser.getUid()).setValue(chatuserMap);
         }
 
@@ -173,22 +175,21 @@ public class chatActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         //(if click endchat + select yes)
 
-                        //point to "Chats" in firebase database
+                        //point to "Chats" in firebase database..
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
-
-                        //read the chat content, store the values in "Ckeylist"
+                        //..and store the chats in "Ckeylist"
                         for (int i = 0; i < Ckeylist.size(); i++){
                             if (Ckeylist.get(i) != null) {
                                 //and delete the chat contents
                                 ref.child(Ckeylist.get(i)).removeValue();
                             }
                         }
-                        //(if click endchat + select yes)
-                        //if classified as a student..
+
+                        //..and also if as a student initiated end chat..
                         if(classification.equals("student")) {
-                            //..get the database reference of the user in "Chatlist"..
+                            //..get the database reference of the teacher user in "Chatlist"..
                             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("ChatList").child(userid);
-                            //..and delete the users information.
+                            //..and delete the teacher + student users branch.
                             ref2.child(fuser.getUid()).removeValue();
 
                             //(therefore, clicking the endchat button will delete the student's information from the ChatList.)

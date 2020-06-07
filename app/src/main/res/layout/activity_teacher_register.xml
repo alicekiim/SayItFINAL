@@ -6,13 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".TeacherRegisterActivity">
 
-    <include layout="@layout/bar_layout" android:id="@+id/reg_page_toolbar"/>
+
+    <include
+        android:id="@+id/reg_page_toolbar"
+        layout="@layout/bar_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+         />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/regPage_name"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="104dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,6 +27,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:hint="@string/teacher_number" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -36,6 +44,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:hint="@string/email"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -51,6 +61,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:hint="@string/password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,8 +71,14 @@
         android:id="@+id/regPage_createButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:background="#469AE9"
+        android:padding="15dp"
         android:text="@string/create_an_account"
+
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regPage_pw" />
 </androidx.constraintlayout.widget.ConstraintLayout>

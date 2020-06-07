@@ -123,10 +123,18 @@ public class TeacherMainActivity extends AppCompatActivity {
     }
 
 
-    private void backToStartPage() {
+ /*   private void backToStartPage() {
         Intent startIntent = new Intent(TeacherMainActivity.this, StartActivity.class);
         startActivity(startIntent);
         finish();
+    }*/
+
+    private void backToStartPage() {
+
+        Intent startIntent = new Intent(TeacherMainActivity.this, StartActivity.class);
+        startIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(startIntent);
+        //finish();
     }
 
 

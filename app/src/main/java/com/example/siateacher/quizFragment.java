@@ -33,8 +33,16 @@ public class quizFragment extends Fragment {
         mMainView = inflater.inflate(R.layout.fragment_quiz, container, false);
 
         //add link to quiz
-        TextView text = mMainView.findViewById(R.id.link);
-        text.setMovementMethod(LinkMovementMethod.getInstance());
+        TextView text1 = mMainView.findViewById(R.id.link1);
+        text1.setMovementMethod(LinkMovementMethod.getInstance());
+
+        //add link to quiz
+        TextView text2 = mMainView.findViewById(R.id.link1);
+        text2.setMovementMethod(LinkMovementMethod.getInstance());
+
+        //add link to quiz
+        TextView text3 = mMainView.findViewById(R.id.link3);
+        text3.setMovementMethod(LinkMovementMethod.getInstance());
 
         return mMainView;
     }

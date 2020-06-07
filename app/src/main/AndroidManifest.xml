@@ -37,11 +37,13 @@
 
         <activity
             android:name=".TeacherLoginActivity"
-            android:parentActivityName=".StartActivity" />
+            android:parentActivityName=".StartActivity"
+            />
 
         <activity
             android:name=".TeacherRegisterActivity"
-            android:parentActivityName=".TeacherLoginActivity" />
+            android:parentActivityName=".TeacherLoginActivity"
+            />
 
         <activity android:name=".TeacherMainActivity" />
 

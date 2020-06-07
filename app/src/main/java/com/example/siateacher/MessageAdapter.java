@@ -16,7 +16,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-import static com.example.siateacher.R.layout.chat_item_left;
+//import static com.example.siateacher.R.layout.chat_item_left;
+
+
+//ALICE CHANGE ALL THESE VARS
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
@@ -44,7 +47,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
             return new MessageAdapter.ViewHolder(view);
         } else {
-            View view = LayoutInflater.from(mContext).inflate(chat_item_left, parent, false);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
             return new MessageAdapter.ViewHolder(view);
         }
     }
@@ -110,7 +113,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         if(mChat.get(position).getSender().equals(fuser.getUid())){
             return MSG_TYPE_RIGHT;
         }else{
-            //and display the receivers messages on the left
+            //and display the chat partners messages on the left
             return MSG_TYPE_LEFT;
         }
     }
