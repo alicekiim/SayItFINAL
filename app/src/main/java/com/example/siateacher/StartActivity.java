@@ -1,4 +1,4 @@
-// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Code adapted from tutorial 'Chat App with Firebase' by KOD Dev.
 // Tutorial found at: https://www.youtube.com/watch?v=LyAmpfm4ndo&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=3
 
 package com.example.siateacher;
