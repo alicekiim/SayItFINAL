@@ -24,44 +24,44 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class TeacherLoginActivity extends AppCompatActivity {
 
-    private androidx.appcompat.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar toolB;
 
-    private TextInputLayout mLoginEmail;
-    private TextInputLayout mLoginPw;
+    private TextInputLayout emailInputLogin;
+    private TextInputLayout pwInputLogin;
 
-    private Button mLoginButton;
+    private Button loginButton;
 
-    private TextView forgot_password;
+    private TextView forgotPW;
 
-    private ProgressDialog mLoginProgress;
+    private ProgressDialog progressDiaglog;
 
-    private Button mRegBtn;
-    private FirebaseAuth mAuth;
+    private Button regButton;
+    private FirebaseAuth fbAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_login);
 
-        mAuth = FirebaseAuth.getInstance(); //instantiating firebase authentication
+        fbAuth = FirebaseAuth.getInstance(); //instantiating firebase authentication
 
         //create toolbar
-        mToolbar = (Toolbar) findViewById(R.id.login_page_toolbar);
-        setSupportActionBar(mToolbar);
+        toolB = (Toolbar) findViewById(R.id.login_page_toolbar);
+        setSupportActionBar(toolB);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SayIt! - Teacher Login");
 
         //creating a new progress dialog
-        mLoginProgress = new ProgressDialog(this);
+        progressDiaglog = new ProgressDialog(this);
 
         //initialising the variables
-        mLoginEmail = (TextInputLayout) findViewById(R.id.loginPage_email);
-        mLoginPw = (TextInputLayout) findViewById(R.id.loginPage_pw);
-        mLoginButton = (Button) findViewById(R.id.loginPage_loginButton);
-        forgot_password = findViewById(R.id.forgot_password);
+        emailInputLogin = (TextInputLayout) findViewById(R.id.loginPage_email);
+        pwInputLogin = (TextInputLayout) findViewById(R.id.loginPage_pw);
+        loginButton = (Button) findViewById(R.id.loginPage_loginButton);
+        forgotPW = findViewById(R.id.forgot_password);
 
         //if forgot button is clicked, open reset password activity
-        forgot_password.setOnClickListener(new View.OnClickListener() {
+        forgotPW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(TeacherLoginActivity.this, TeacherResetPasswordActivity.class));
@@ -70,7 +70,7 @@ public class TeacherLoginActivity extends AppCompatActivity {
 
         //..? how to add back button -- parent act
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolB.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent back_intent = new Intent(TeacherLoginActivity.this, StartActivity.class);
@@ -81,11 +81,11 @@ public class TeacherLoginActivity extends AppCompatActivity {
 
 
 
-        mRegBtn = (Button) findViewById(R.id.startPage_regButton);
+        regButton = (Button) findViewById(R.id.startPage_regButton);
 
 
         //send to register activity
-        mRegBtn.setOnClickListener(new View.OnClickListener() {
+        regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -95,22 +95,22 @@ public class TeacherLoginActivity extends AppCompatActivity {
             }
         });
 
-        mLoginButton.setOnClickListener(new View.OnClickListener(){
+        loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 //get the text of the  email and password and store them as a string variable
-                String email = mLoginEmail.getEditText().getText().toString();
-                String password = mLoginPw.getEditText().getText().toString();
+                String email = emailInputLogin.getEditText().getText().toString();
+                String password = pwInputLogin.getEditText().getText().toString();
 
                 //if email/password is not empty,
                 if(!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)){
                     //show progress dialog title
-                    mLoginProgress.setTitle("Logging in");
+                    progressDiaglog.setTitle("Logging in");
                     //body message of prog diaglog
-                    mLoginProgress.setMessage("Please wait while we check your details");
+                    progressDiaglog.setMessage("Please wait while we check your details");
                     //even if user clicks outside the dialog box, progress log will not be dismissed
-                    mLoginProgress.setCanceledOnTouchOutside(false);
-                    mLoginProgress.show();
+                    progressDiaglog.setCanceledOnTouchOutside(false);
+                    progressDiaglog.show();
 
                     //calls loginUser function
                     loginUser(email, password);
@@ -122,11 +122,11 @@ public class TeacherLoginActivity extends AppCompatActivity {
 
     private void loginUser(String email, String password) {
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){ //if task is successful,
-                    mLoginProgress.dismiss(); //dismiss the progress dialog
+                    progressDiaglog.dismiss(); //dismiss the progress dialog
 
                     Intent mainIntent = new Intent (TeacherLoginActivity.this, TeacherMainActivity.class); //intent method to take user from the login to main activity
                     startActivity(mainIntent);
@@ -134,7 +134,7 @@ public class TeacherLoginActivity extends AppCompatActivity {
 
                 } else{
                     //if log in fails, hide the progress log,
-                    mLoginProgress.hide();
+                    progressDiaglog.hide();
                     // and display a message to the user.
                     Toast.makeText(TeacherLoginActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();

@@ -11,9 +11,9 @@ import android.view.View;
 
 public class SoftKeyboard extends View {
 
-    private boolean mShownKeyboard;
-    private OnShownKeyboardListener mOnShownSoftKeyboard;
-    private OnHiddenKeyboardListener onHiddenSoftKeyboard;
+    private boolean seenKeyboard;
+    private OnShownKeyboardListener softKeyboard;
+    private OnHiddenKeyboardListener hiddenSoftKeyboard;
 
     public SoftKeyboard(Context context) {
         this(context, null);
@@ -31,32 +31,32 @@ public class SoftKeyboard extends View {
         int statusBarHeight = rect.top;
         int screenHeight = activity.getWindowManager().getDefaultDisplay().getHeight();
         int diffHeight = (screenHeight - statusBarHeight) - h;
-        if (diffHeight > 100 && !mShownKeyboard) { // Assumes all keyboards are larger than 100px
-            mShownKeyboard = true;
+        if (diffHeight > 100 && !seenKeyboard) { // Assumes all keyboards are larger than 100px
+            seenKeyboard = true;
             onShownSoftKeyboard();
-        } else if (diffHeight < 100 && mShownKeyboard) {
-            mShownKeyboard = false;
+        } else if (diffHeight < 100 && seenKeyboard) {
+            seenKeyboard = false;
             onHiddenSoftKeyboard();
         }
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
     public void onHiddenSoftKeyboard() {
-        if (onHiddenSoftKeyboard != null)
-            onHiddenSoftKeyboard.onHiddenSoftKeyboard();
+        if (hiddenSoftKeyboard != null)
+            hiddenSoftKeyboard.onHiddenSoftKeyboard();
     }
 
     public void onShownSoftKeyboard() {
-        if (mOnShownSoftKeyboard != null)
-            mOnShownSoftKeyboard.onShowSoftKeyboard();
+        if (softKeyboard != null)
+            softKeyboard.onShowSoftKeyboard();
     }
 
     public void setOnShownKeyboard(OnShownKeyboardListener listener) {
-        mOnShownSoftKeyboard = listener;
+        softKeyboard = listener;
     }
 
     public void setOnHiddenKeyboard(OnHiddenKeyboardListener listener) {
-        onHiddenSoftKeyboard = listener;
+        hiddenSoftKeyboard = listener;
     }
 
     public interface OnShownKeyboardListener {

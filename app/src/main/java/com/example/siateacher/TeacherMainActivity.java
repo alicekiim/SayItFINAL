@@ -29,23 +29,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeacherMainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseUser mfirebaseUser;
-    private DatabaseReference mReference;
+    private FirebaseAuth fbAuth;
+    private FirebaseUser fbUser;
+    private DatabaseReference dbRef;
 
-    private androidx.appcompat.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar toolB;
 
-    private ViewPager mViewPager;
-    private TeacherSectionsPagerAdapter mTeacherSectionsPagerAdapter;
+    private ViewPager viewPager;
+    private TeacherSectionsPagerAdapter teacherSectionsPagerAdapter;
 
-    private TabLayout mTabLayout;
+    private TabLayout tabLayout;
 
-    private CircleImageView profile_image;
+    private CircleImageView profileImage;
     private TextView username;
 
     private Button mChatButton;
-    //private Button mQuizButton;
-    // private Button mFAQButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,25 +51,25 @@ public class TeacherMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_main);
 
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        fbAuth = FirebaseAuth.getInstance();
 
         // storing the toolbar in the toolbar variable
-        mToolbar = findViewById(R.id.main_page_toolbar);
-        setSupportActionBar(mToolbar);
+        toolB = findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(toolB);
         getSupportActionBar().setTitle("SayIt! - Teacher");
 
         // storing the viewpager in the viewpager variable
-        mViewPager = (ViewPager) findViewById(R.id.mainPage_tabPager);
-        mTeacherSectionsPagerAdapter = new TeacherSectionsPagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.mainPage_tabPager);
+        teacherSectionsPagerAdapter = new TeacherSectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager.setAdapter(mTeacherSectionsPagerAdapter);
+        viewPager.setAdapter(teacherSectionsPagerAdapter);
 
-        mTabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
+        tabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
 
         //initialising the variables
-        profile_image = findViewById(R.id.profile_image);
+        profileImage = findViewById(R.id.profile_image);
         username = findViewById(R.id.name);
 
         //startService(new Intent(this, UnCatchTaskService.class)); //task종료시점을 알기 위해 학생 초기화면에 startService 시작한다.
@@ -82,11 +80,11 @@ public class TeacherMainActivity extends AppCompatActivity {
         else {
 
             //get current user
-            mfirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            //storing the database reference of the user
-            mReference = FirebaseDatabase.getInstance().getReference("Teachers").child(mfirebaseUser.getUid());
+            fbUser = FirebaseAuth.getInstance().getCurrentUser();
+            //storing the database dbRef of the user
+            dbRef = FirebaseDatabase.getInstance().getReference("Teachers").child(fbUser.getUid());
 
-            mReference.addValueEventListener(new ValueEventListener() {
+            dbRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     //Get a DataSnapshot for the location at the specified relative path
@@ -100,15 +98,15 @@ public class TeacherMainActivity extends AppCompatActivity {
 
                         //get their profile image
                         if ("default".equals(user.getImage())) {
-                            profile_image.setImageResource(R.mipmap.ic_launcher);
+                            profileImage.setImageResource(R.mipmap.ic_launcher);
                         } else {
-                            Glide.with(getApplicationContext()).load(user.getImage()).into(profile_image);
+                            Glide.with(getApplicationContext()).load(user.getImage()).into(profileImage);
                         }
                     }else {
                         //if username isn't found, put as blank
                         username.setText("");
                         //if profile image isn't found, put in a default image
-                        profile_image.setImageResource(R.mipmap.ic_launcher);
+                        profileImage.setImageResource(R.mipmap.ic_launcher);
 
                     }
 

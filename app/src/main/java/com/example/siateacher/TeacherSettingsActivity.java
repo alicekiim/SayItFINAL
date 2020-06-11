@@ -41,30 +41,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeacherSettingsActivity extends AppCompatActivity {
 
-    private DatabaseReference mUserDB;
-    private FirebaseUser mCurrentUser;
+    private DatabaseReference dbRef;
+    private FirebaseUser currentUser;
 
-    private CircleImageView mDisplayImage;
-    private TextView mName;
-    private TextView mStatus;
+    private CircleImageView profileImage;
+    private TextView aName;
 
-
-    private Button mImageButton;
+    private Button profileImageButton;
 
     private static final int GALLERY_PICK=1;
 
     //storage fb
-    private StorageReference mImageStorage;
+    private StorageReference imageStorage;
 
     private Uri imageUri;
-    private StorageTask uploadTask;
+    private StorageTask storageTask;
 
-
-    private ProgressDialog mProgressDiaglog;
-
-    private androidx.appcompat.widget.Toolbar mToolbar;
-
-    Uri imgUri;
+    private androidx.appcompat.widget.Toolbar toolB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,30 +65,30 @@ public class TeacherSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_settings);
 
         //initialise the variables
-        mDisplayImage = (CircleImageView) findViewById(R.id.settingsPage_image);
-        mName = (TextView) findViewById(R.id.settingsPage_name);
+        profileImage = (CircleImageView) findViewById(R.id.settingsPage_image);
+        aName = (TextView) findViewById(R.id.settingsPage_name);
 
-        mImageButton = (Button) findViewById(R.id.settingPage_imageBtn);
+        profileImageButton = (Button) findViewById(R.id.settingPage_imageBtn);
 
-        //store the database reference for image
-        mImageStorage = FirebaseStorage.getInstance().getReference();
+        //store the database dbRef for image
+        imageStorage = FirebaseStorage.getInstance().getReference();
 
         //get current user
-        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //store current users uid as string variable
-        String current_uid = mCurrentUser.getUid();
+        String current_uid = currentUser.getUid();
 
-        //store the database reference of the current user
-        mUserDB = FirebaseDatabase.getInstance().getReference().child("Teachers").child(current_uid);
+        //store the database dbRef of the current user
+        dbRef = FirebaseDatabase.getInstance().getReference().child("Teachers").child(current_uid);
 
         //toolbar
-        mToolbar = (Toolbar) findViewById(R.id.settings_bar);
-        setSupportActionBar(mToolbar);
+        toolB = (Toolbar) findViewById(R.id.settings_bar);
+        setSupportActionBar(toolB);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SayIt! - Account Settings");
 
-        mUserDB.addValueEventListener(new ValueEventListener() {
+        dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Teachers user = dataSnapshot.getValue(Teachers.class);
@@ -106,13 +99,13 @@ public class TeacherSettingsActivity extends AppCompatActivity {
 
 
                 //and set the name as name variable
-                mName.setText(name);
+                aName.setText(name);
 
 
                 //and if the image does not equal default
                 if(!image.equals("default")){
                     //load the unique image the user is using instead
-                    Picasso.get().load(image).into(mDisplayImage);
+                    Picasso.get().load(image).into(profileImage);
                 }
             }
 
@@ -125,7 +118,7 @@ public class TeacherSettingsActivity extends AppCompatActivity {
 
 
         //set an onclicklistener for the image button
-        mImageButton.setOnClickListener(new View.OnClickListener() {
+        profileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -161,10 +154,10 @@ public class TeacherSettingsActivity extends AppCompatActivity {
 
         if (imageUri != null){
 
-            final StorageReference filepath = mImageStorage.child("profile_images").child(mCurrentUser.getUid()+".jpg");//Storage path
-            uploadTask = filepath.putFile(imageUri);//put file in selected image address/path
+            final StorageReference filepath = imageStorage.child("profile_images").child(currentUser.getUid()+".jpg");//Storage path
+            storageTask = filepath.putFile(imageUri);//put file in selected image address/path
 
-            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            storageTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()){
@@ -183,11 +176,11 @@ public class TeacherSettingsActivity extends AppCompatActivity {
                         //..then converted to string
                         String mUri = downloadUri.toString();
 
-                        //storing the database reference of the current user to store the users image
-                        mUserDB = FirebaseDatabase.getInstance().getReference("Teachers").child(mCurrentUser.getUid());
+                        //storing the database dbRef of the current user to store the users image
+                        dbRef = FirebaseDatabase.getInstance().getReference("Teachers").child(currentUser.getUid());
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("image", ""+mUri);
-                        mUserDB.updateChildren(map);
+                        dbRef.updateChildren(map);
 
                         //and dismiss the progress dialog once upload is complete
                         pd.dismiss();

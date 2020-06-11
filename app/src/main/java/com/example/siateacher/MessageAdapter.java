@@ -26,31 +26,31 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
-    public static final int MSG_TYPE_LEFT = 0;
-    public static final int MSG_TYPE_RIGHT = 1;
+    public static final int MSG_VIEW_LEFT = 0;
+    public static final int MSG_VIEW_RIGHT = 1;
 
-    private Context mContext;
+    private Context aContext;
 
-    private List<Chat> mChat; //list to hold messages
-    private String imageurl;
+    private List<Chat> aChat; //list to hold messages
+    private String imageURL;
 
-    FirebaseUser fuser;
+    FirebaseUser fbUser;
 
     public MessageAdapter (Context mContext, List<Chat> mChat, String imageurl){
-        this.mChat = mChat;
-        this.mContext = mContext;
-        this.imageurl = imageurl;
+        this.aChat = mChat;
+        this.aContext = mContext;
+        this.imageURL = imageurl;
     }
 
     @NonNull
     @Override
     //adding the left and right layout
     public MessageAdapter.ViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
-        if (viewType == MSG_TYPE_RIGHT) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
+        if (viewType == MSG_VIEW_RIGHT) {
+            View view = LayoutInflater.from(aContext).inflate(R.layout.chat_item_right, parent, false);
             return new MessageAdapter.ViewHolder(view);
         } else {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
+            View view = LayoutInflater.from(aContext).inflate(R.layout.chat_item_left, parent, false);
             return new MessageAdapter.ViewHolder(view);
         }
     }
@@ -58,30 +58,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder (@NonNull MessageAdapter.ViewHolder holder, int position){
         //get the position of the message in the list and store in "chat"
-        Chat chat = mChat.get(position);
+        Chat chat = aChat.get(position);
 
         //get the message to show in the chat window
         holder.show_message.setText(chat.getMessage());
 
         //if the image url is default, load ic_launcher image
-        if(imageurl.equals("default")){
+        if(imageURL.equals("default")){
             holder.profile_image.setImageResource(R.mipmap.ic_launcher);
         }else{
             //else, if a unique profile image url is found, load that into the holder
-            Glide.with(mContext).load(imageurl).into(holder.profile_image);
+            Glide.with(aContext).load(imageURL).into(holder.profile_image);
         }
         //checks for last message
-        if (position == mChat.size()-1){
+        if (position == aChat.size()-1){
             if(chat.isIsseen()){//if last message is read
                 //mark it as seen
-                holder.txt_seen.setText("Seen");
+                holder.msg_seen.setText("Seen");
             }else{//else if last message not yet read
                 //mark it as delivered
-                holder.txt_seen.setText("Delivered");
+                holder.msg_seen.setText("Delivered");
             }
         }else{
             //hide seen/delivered status for older messages
-           holder.txt_seen.setVisibility(View.GONE);
+           holder.msg_seen.setVisibility(View.GONE);
         }
 
     }
@@ -89,14 +89,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public int getItemCount(){
         //returns size of the message list
-        return mChat.size();
+        return aChat.size();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message; //the message
         public ImageView profile_image;
-        public TextView txt_seen;
+        public TextView msg_seen;
 
         public ViewHolder (View itemView){
             super(itemView);
@@ -104,20 +104,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             //the layout
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.profile_image);
-            txt_seen = itemView.findViewById(R.id.txt_seen);
+            msg_seen = itemView.findViewById(R.id.txt_seen);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        //get current user and store it in "fuser"
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        //if message sender equals fuser(and is therefore, the current user), display their messages on the right
-        if(mChat.get(position).getSender().equals(fuser.getUid())){
-            return MSG_TYPE_RIGHT;
+        //get current user and store it in "fbUser"
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        //if message sender equals fbUser(and is therefore, the current user), display their messages on the right
+        if(aChat.get(position).getSender().equals(fbUser.getUid())){
+            return MSG_VIEW_RIGHT;
         }else{
             //and display the chat partners messages on the left
-            return MSG_TYPE_LEFT;
+            return MSG_VIEW_LEFT;
         }
     }
 }

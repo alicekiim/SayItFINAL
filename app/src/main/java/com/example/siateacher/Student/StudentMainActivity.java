@@ -28,17 +28,14 @@ import com.google.firebase.database.ValueEventListener;
 
 public class StudentMainActivity extends AppCompatActivity {
 
-    private androidx.appcompat.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar toolB;
 
-    private ViewPager mViewPager;
-    private StudentSectionsPagerAdapter mStudentSectionsPagerAdapter;
-    private TabLayout mTabLayout;;
+    private ViewPager viewPager;
+    private StudentSectionsPagerAdapter studentSectionsPagerAdapter;
+    private TabLayout tabLayout;
 
     private String mAuth;
-
-    private FirebaseUser mfirebaseUser;
-    private DatabaseReference mReference;
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +43,20 @@ public class StudentMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_main);
 
         //create toolbar
-        mToolbar = (Toolbar) findViewById(R.id.student_main_toolbar);
-        setSupportActionBar(mToolbar);
+        toolB = (Toolbar) findViewById(R.id.student_main_toolbar);
+        setSupportActionBar(toolB);
         getSupportActionBar().setTitle("SayIt! - Student");
 
         //set up ViewPager
-        mViewPager = (ViewPager) findViewById(R.id.StudentMain_tabPager);
+        viewPager = (ViewPager) findViewById(R.id.StudentMain_tabPager);
         //pager adapter flip between the fragments
-        mStudentSectionsPagerAdapter = new StudentSectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mStudentSectionsPagerAdapter);
+        studentSectionsPagerAdapter = new StudentSectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(studentSectionsPagerAdapter);
 
         //populate the tabs
-        mTabLayout = (TabLayout) findViewById(R.id.StudentTabLayout);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
+        tabLayout = (TabLayout) findViewById(R.id.StudentTabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
 
         //startService: Request that a given application service be started
         // In order to know when the task is finished, startService starts on the initial screen of the student.

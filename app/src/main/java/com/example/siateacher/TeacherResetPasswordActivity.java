@@ -19,12 +19,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class TeacherResetPasswordActivity extends AppCompatActivity {
 
-    private androidx.appcompat.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar toolB;
 
-    private TextInputLayout mEmail;
-    private Button mResetButton;
+    private TextInputLayout emailInput;
+    private Button resetButton;
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth fbAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,30 +32,30 @@ public class TeacherResetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_reset_password);
 
         //toolbar
-        mToolbar = findViewById(R.id.resetPw_toolbar);
-        setSupportActionBar(mToolbar);
+        toolB = findViewById(R.id.resetPw_toolbar);
+        setSupportActionBar(toolB);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SayIt! - Reset Password");
 
         //initialise the variables
-        mEmail = findViewById(R.id.resetPw_email);
-        mResetButton = findViewById(R.id.resetPw_sendButton);
+        emailInput = findViewById(R.id.resetPw_email);
+        resetButton = findViewById(R.id.resetPw_sendButton);
 
         //instantiating the firebase auth
-        mAuth = FirebaseAuth.getInstance();
+        fbAuth = FirebaseAuth.getInstance();
 
-        mResetButton.setOnClickListener(new View.OnClickListener() {
+        resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //get the email and store it in a string variable
-                String email = mEmail.getEditText().getText().toString();
+                String email = emailInput.getEditText().getText().toString();
 
                 //if email inputted is blank, show error message
                 if (email.equals("")){
                     Toast.makeText(TeacherResetPasswordActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 } else {
                     //if email is inputted correctly, send email to user's email with instructions on how to reset password
-                    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    fbAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){

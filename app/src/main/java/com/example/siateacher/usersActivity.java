@@ -21,27 +21,27 @@ import java.util.List;
 
 public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder> {
 
-    private Context mContext;
-    private List<Teachers> mUsers;
+    private Context aContext;
+    private List<Teachers> teacherUsers;
 
 
     public usersActivity (Context mContext, List<Teachers> mUsers){
-        this.mUsers = mUsers;
-        this.mContext = mContext;
+        this.teacherUsers = mUsers;
+        this.aContext = mContext;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(mContext).inflate(R.layout.users_single_layout, parent, false);
+        View view = LayoutInflater.from(aContext).inflate(R.layout.users_single_layout, parent, false);
         return new usersActivity.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
 
-        final Teachers user = mUsers.get(position);
-        if(mUsers.size() !=0) {//if there ARE users in the database
+        final Teachers user = teacherUsers.get(position);
+        if(teacherUsers.size() !=0) {//if there ARE users in the database
 
             //get the students name
             holder.name.setText(user.getId());
@@ -50,7 +50,7 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
             if("default".equals(user.getImage())){
                 holder.profile_image.setImageResource(R.mipmap.ic_launcher);
             }else {
-                Glide.with(mContext).load(user.getImage()).into(holder.profile_image);
+                Glide.with(aContext).load(user.getImage()).into(holder.profile_image);
             }
         }
 
@@ -58,11 +58,11 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent chat_intent = new Intent(mContext, chatActivity.class);
+                Intent chat_intent = new Intent(aContext, chatActivity.class);
                 chat_intent.putExtra("id", user.getId());
                 chat_intent.putExtra("classification", "teacher"); //checks if teacher entered the chat
 
-                mContext.startActivity(chat_intent);
+                aContext.startActivity(chat_intent);
             }
 
         });
@@ -71,7 +71,7 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
 
     @Override
     public int getItemCount(){
-        return mUsers.size();
+        return teacherUsers.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

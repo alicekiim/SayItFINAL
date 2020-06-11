@@ -44,18 +44,18 @@ import java.util.List;
 public class StudentChatsFragment extends Fragment {
 
     //creating variables
-    private List<Teachers> mUsers;  //list of Teachers class
-    private List<Chat> mchat;
+    private List<Teachers> teacherUsers;  //list of Teachers class
+    private List<Chat> aChat;
 
-    private View mMainView;
+    private View aMainView;
 
-    private Button mStartChatButton;
+    private Button startChatButton;
     int mListCnt = 0; //Value to start from in order to repeat the teacher list
 
-    private FirebaseAuth mFirebaseAuth;
-    private DatabaseReference mDatabase;
+    private FirebaseAuth fbAuth;
+    private DatabaseReference dbRef;
 
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     private NotificationManager notificationManager;
     private Notification.Builder notification;
@@ -74,8 +74,8 @@ public class StudentChatsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mUsers = new ArrayList<>();
-        mchat = new ArrayList<>();
+        teacherUsers = new ArrayList<>();
+        aChat = new ArrayList<>();
 
         //Initialize the FirebaseAuth
         initFBAuthentication();
@@ -88,35 +88,35 @@ public class StudentChatsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        mMainView = inflater.inflate(R.layout.fragment_student_home, container, false);
-        mStartChatButton = mMainView.findViewById(R.id.student_startchat);
+        aMainView = inflater.inflate(R.layout.fragment_student_home, container, false);
+        startChatButton = aMainView.findViewById(R.id.student_startchat);
 
-        return mMainView;
+        return aMainView;
 
     }
     public void onStart(){
         super.onStart();
 
         //addAuthStateListener is called when there is a change in the authentication state.
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-        mStartChatButton = mMainView.findViewById(R.id.student_startchat);
+        fbAuth.addAuthStateListener(authStateListener);
+        startChatButton = aMainView.findViewById(R.id.student_startchat);
 
         //click start chat button
-        mStartChatButton.setOnClickListener(new View.OnClickListener() {
+        startChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //create intent to send user to chat activity
                 Intent chat_intent = new Intent(getContext(), chatActivity.class);
 
                 //Check whether Database [Teachers] (teachers) size and mListCnt are the same
-                if (mListCnt == mUsers.size()) {
+                if (mListCnt == teacherUsers.size()) {
                     //If it is the same, it initializes the mListCnt value to 0
                     mListCnt = 0;
 
                 }
 
-                //pass student "id" to chatActivity. Value of id is: mUsers.get(mListCnt).getId()
-                chat_intent.putExtra("id", mUsers.get(mListCnt).getId());
+                //pass student "id" to chatActivity. Value of id is: teacherUsers.get(mListCnt).getId()
+                chat_intent.putExtra("id", teacherUsers.get(mListCnt).getId());
                 //pass "classification" to chatActivity. the value is "student"
                 //purpose is to check whether the student or the teacher entered the chat
                 chat_intent.putExtra("classification", "student");
@@ -131,12 +131,12 @@ public class StudentChatsFragment extends Fragment {
     }
     private void initFBAuthentication() {
         //Initialize the FirebaseAuth instance
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        fbAuth = FirebaseAuth.getInstance();
     }
 
     //FirebaseAuth state check
     private void initFBAuthState() {
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             //OnAuthStateChanged gets invoked in the UI thread on changes in the authentication state:
             //- Right after the listener has been registered
@@ -156,7 +156,7 @@ public class StudentChatsFragment extends Fragment {
                     //if user not found, set as false
                     AuthState = false;
                     //and disable start chat button
-                    mStartChatButton.setEnabled(false);
+                    startChatButton.setEnabled(false);
                 }
 
             }
@@ -165,7 +165,7 @@ public class StudentChatsFragment extends Fragment {
 
     //anonymous student user login
     private void signInAnonymously() {
-        mFirebaseAuth.signInAnonymously()
+        fbAuth.signInAnonymously()
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -174,7 +174,7 @@ public class StudentChatsFragment extends Fragment {
                         if (task.isSuccessful()) {
 
                             //get current user
-                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                            FirebaseUser user = fbAuth.getCurrentUser();
 
                             //student id into string
                             String studentsid = user.getUid();
@@ -184,7 +184,7 @@ public class StudentChatsFragment extends Fragment {
                             int num = Integer.parseInt(temp2); //convert string to int
 
                             //store the database reference of the current student user
-                            mDatabase = FirebaseDatabase.getInstance().getReference().child("Students").child(studentsid);
+                            dbRef = FirebaseDatabase.getInstance().getReference().child("Students").child(studentsid);
 
                             //store details in hash map, by adding values to the child nodes in db
                             HashMap<String, Object> userMap = new HashMap<>();
@@ -194,7 +194,7 @@ public class StudentChatsFragment extends Fragment {
                             userMap.put("status", "online");
                             userMap.put("num", num); //creates a unique serial number for use in notifications
 
-                            mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            dbRef.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
@@ -226,7 +226,7 @@ public class StudentChatsFragment extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUsers.clear();
+                teacherUsers.clear();
 
                 //retrieve value of users class
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -235,12 +235,12 @@ public class StudentChatsFragment extends Fragment {
                     Teachers user = snapshot.getValue(Teachers.class);
 
                     //add the user
-                    mUsers.add(user);
+                    teacherUsers.add(user);
 
                 }
 
                 //Activate the start chat button (ONLY activates the chat button once getting user information)
-                mStartChatButton.setEnabled(true);
+                startChatButton.setEnabled(true);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -263,10 +263,10 @@ public class StudentChatsFragment extends Fragment {
                 Chat chat = dataSnapshot.getValue(Chat.class);
 
                 //if user id exists
-                if (mFirebaseAuth.getUid() != null) {
+                if (fbAuth.getUid() != null) {
 
                     //"if isseen==false" - therfore, gets only the unread data.
-                    if (mFirebaseAuth.getUid().equals(chat.getReceiver()) && chat.isIsseen() == false) {
+                    if (fbAuth.getUid().equals(chat.getReceiver()) && chat.isIsseen() == false) {
 
                         String mMessage;
                         String mId;
@@ -378,7 +378,7 @@ public class StudentChatsFragment extends Fragment {
         //when user presses the home button (i.e. leaves the app for a moment w/o logging out)..
         //..on firebase database it will show their status as "no chat target"
         if(AuthState) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Students").child(mFirebaseAuth.getUid());
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Students").child(fbAuth.getUid());
             reference.child("status").setValue("no chat target");
         }
     }
@@ -387,7 +387,7 @@ public class StudentChatsFragment extends Fragment {
         //same as onPause()
         //determines if user is in the chat activity or not
         if(AuthState) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Students").child(mFirebaseAuth.getUid());
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Students").child(fbAuth.getUid());
             reference.child("status").setValue("no chat target");
         }
     }

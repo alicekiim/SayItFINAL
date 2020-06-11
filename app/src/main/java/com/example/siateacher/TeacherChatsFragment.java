@@ -40,17 +40,17 @@ import java.util.List;
 
 public class TeacherChatsFragment extends Fragment {
 
-    private RecyclerView mUsersListRecycler;
+    private RecyclerView usersListRecycler;
     private usersActivity usersActivity;
-    private List<Teachers> mUsers;
-    private List<Chat> mchat;
+    private List<Teachers> teacherUsers;
+    private List<Chat> aChat;
 
-    private View mMainView;
+    private View aMainView;
 
     private NotificationManager notificationManager;
     private Notification.Builder notification;
 
-    FirebaseUser fuser;
+    FirebaseUser fbUser;
 
     private String CHANNEL_ID;
 
@@ -62,12 +62,12 @@ public class TeacherChatsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //get current user
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //create new array list for users
-        mUsers = new ArrayList<>();
+        teacherUsers = new ArrayList<>();
         //create new array list for chat
-        mchat = new ArrayList<>();
+        aChat = new ArrayList<>();
         //create notifications
         createNotificationChannel();
         //Load list of teachers to use for chat
@@ -82,34 +82,34 @@ public class TeacherChatsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        mMainView = inflater.inflate(R.layout.fragment_teacher_chats, container, false);
-        mUsersListRecycler = mMainView.findViewById(R.id.fragment_chat);
-        mUsersListRecycler.setHasFixedSize(true);
-        mUsersListRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        aMainView = inflater.inflate(R.layout.fragment_teacher_chats, container, false);
+        usersListRecycler = aMainView.findViewById(R.id.fragment_chat);
+        usersListRecycler.setHasFixedSize(true);
+        usersListRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        return mMainView;
+        return aMainView;
     }
 
     private void readUsers() {
 
         //gets the user id of the current user within "Chatlist" in the database of firebase
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList").child(fuser.getUid());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ChatList").child(fbUser.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUsers.clear();
+                teacherUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Teachers user = snapshot.getValue(Teachers.class);
 
                     //Show user only if the student's status value shows they are online and chatting with teacher
                     // (it'll say "status: [teacher id]" on firebase database)
                     if("online".equals(user.getStatus())) {
-                        mUsers.add(user);
+                        teacherUsers.add(user);
                     }
                 }
-                usersActivity = new usersActivity(getContext(), mUsers);
-                mUsersListRecycler.setAdapter(usersActivity);
+                usersActivity = new usersActivity(getContext(), teacherUsers);
+                usersListRecycler.setAdapter(usersActivity);
             }
 
             @Override
@@ -131,9 +131,9 @@ public class TeacherChatsFragment extends Fragment {
 
                 Chat chat = dataSnapshot.getValue(Chat.class);
 
-                if (fuser.getUid() != null) {
+                if (fbUser.getUid() != null) {
                     //Get only the unread data
-                    if (fuser.getUid().equals(chat.getReceiver()) && chat.isIsseen() == false) {
+                    if (fbUser.getUid().equals(chat.getReceiver()) && chat.isIsseen() == false) {
                         String mMessage;
                         String mId;
 
@@ -250,8 +250,8 @@ public class TeacherChatsFragment extends Fragment {
         //determines if user is in the chat activity or not
         //when user presses the home button (i.e. leaves the app for a moment w/o logging out)..
         //..on firebase database it will show their status as "no chat target"
-        if(fuser.getUid() != null) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fuser.getUid());
+        if(fbUser.getUid() != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fbUser.getUid());
             reference.child("status").setValue("no chat target");
         }
 
@@ -260,8 +260,8 @@ public class TeacherChatsFragment extends Fragment {
         super.onResume();
         //same as onPause()
         //determines if user is in the chat activity or not
-        if(fuser.getUid() != null) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fuser.getUid());
+        if(fbUser.getUid() != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fbUser.getUid());
             reference.child("status").setValue("no chat target");
         }
 

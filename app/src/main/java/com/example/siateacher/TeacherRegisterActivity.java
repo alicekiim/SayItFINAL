@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -29,18 +28,18 @@ import java.util.HashMap;
 public class TeacherRegisterActivity extends AppCompatActivity {
 
     //create variables
-    private TextInputLayout mName;
-    private TextInputLayout mEmail;
-    private TextInputLayout mPw;
-    private Button mCreateButton;
+    private TextInputLayout nameInput;
+    private TextInputLayout emailInput;
+    private TextInputLayout pwInput;
+    private Button registerButton;
 
-    private androidx.appcompat.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar toolB;
 
-    private DatabaseReference mDatabase;
+    private DatabaseReference dbRef;
 
-    private ProgressDialog mRegProgress;
+    private ProgressDialog progressDialog;
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth fbAuth;
 
 
 
@@ -50,41 +49,41 @@ public class TeacherRegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_register);
 
         //instantiating the firebase auth
-        mAuth = FirebaseAuth.getInstance();
+        fbAuth = FirebaseAuth.getInstance();
 
         //toolbar
-        mToolbar = findViewById(R.id.reg_page_toolbar);
-        setSupportActionBar(mToolbar);
+        toolB = findViewById(R.id.reg_page_toolbar);
+        setSupportActionBar(toolB);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SayIt! - Teacher Registration");
 
 
         //progress dialog
-        mRegProgress = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
 
 
         //initialise the variables
-        mName = findViewById(R.id.regPage_name);
-        mEmail = findViewById(R.id.regPage_email);
-        mPw = findViewById(R.id.regPage_pw);
-        mCreateButton = findViewById(R.id.regPage_createButton);
+        nameInput = findViewById(R.id.regPage_name);
+        emailInput = findViewById(R.id.regPage_email);
+        pwInput = findViewById(R.id.regPage_pw);
+        registerButton = findViewById(R.id.regPage_createButton);
 
 
-        mCreateButton.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //get the text and store it in a string variable
-                String display_name = mName.getEditText().getText().toString();
-                String email = mEmail.getEditText().getText().toString();
-                String password = mPw.getEditText().getText().toString();
+                String display_name = nameInput.getEditText().getText().toString();
+                String email = emailInput.getEditText().getText().toString();
+                String password = pwInput.getEditText().getText().toString();
 
                 // if statement to check the textboxes are not empty
                 if (!TextUtils.isEmpty(display_name) || !TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
                     //display progress bar
-                    mRegProgress.setTitle("Registering your teacher account");
-                    mRegProgress.setMessage("We are creating your account");
-                    mRegProgress.setCanceledOnTouchOutside(false);
-                    mRegProgress.show();
+                    progressDialog.setTitle("Registering your teacher account");
+                    progressDialog.setMessage("We are creating your account");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
                     //call registerTeacher function
                     registerTeacher(display_name, email, password);
                 } else if (password.length()<6){
@@ -101,7 +100,7 @@ public class TeacherRegisterActivity extends AppCompatActivity {
 
     private void registerTeacher(final String display_name, String email, String password) {
         //function to create new user via email and password
-        mAuth.createUserWithEmailAndPassword(email, password)
+        fbAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -116,8 +115,8 @@ public class TeacherRegisterActivity extends AppCompatActivity {
                             String temp2 =String.valueOf(temp1).substring(4); //convert the time into string
                             int num = Integer.parseInt(temp2); //convert string to int
 
-                            //store the database reference of the current user
-                            mDatabase = FirebaseDatabase.getInstance().getReference().child("Teachers").child(userid);
+                            //store the database dbRef of the current user
+                            dbRef = FirebaseDatabase.getInstance().getReference().child("Teachers").child(userid);
 
                             //store details in hash map, by adding values to the child nodes in db
                             HashMap<String, Object> userMap = new HashMap<>();
@@ -128,12 +127,12 @@ public class TeacherRegisterActivity extends AppCompatActivity {
                             userMap.put("num", num); //creates a unique serial number for use in notifications
 
 
-                            mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            dbRef.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
                                     if(task.isSuccessful()){//if successful
-                                        mRegProgress.dismiss();//dismiss prog bar
+                                        progressDialog.dismiss();//dismiss prog bar
 
                                         // Sign in success, update UI with the signed-in user's information
                                         //and redirect to main activity
@@ -147,7 +146,7 @@ public class TeacherRegisterActivity extends AppCompatActivity {
 
                         } else {//If sign in fails..
 
-                            mRegProgress.hide(); //..hide prog bar
+                            progressDialog.hide(); //..hide prog bar
                             // If sign in fails, display a message to the user.
 
                             //.. and display a message to the user

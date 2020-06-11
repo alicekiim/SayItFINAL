@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 public class TeacherFaqActivity extends AppCompatActivity {
 
-    private androidx.appcompat.widget.Toolbar mToolbar;
+    private androidx.appcompat.widget.Toolbar toolB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,14 +15,14 @@ public class TeacherFaqActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher_faq);
 
         //create toolbar
-        mToolbar = (Toolbar) findViewById(R.id.faq_page_toolbar);
-        setSupportActionBar(mToolbar);
+        toolB = (Toolbar) findViewById(R.id.faq_page_toolbar);
+        setSupportActionBar(toolB);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SayIt! - FAQ's");
 
        /*
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolB.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent back_intent = new Intent(TeacherFaqActivity.this, TeacherMainActivity.class);
