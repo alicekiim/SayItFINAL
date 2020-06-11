@@ -20,6 +20,6 @@ public class StudentFaqActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.student_faq_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Say It App - Student FAQ's");
+        getSupportActionBar().setTitle("SayIt! - Student FAQ's");
     }
 }

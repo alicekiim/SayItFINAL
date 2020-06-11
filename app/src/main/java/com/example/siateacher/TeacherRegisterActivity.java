@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=b9nNm-xxmOY&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=2
+
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
@@ -53,7 +56,7 @@ public class TeacherRegisterActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.reg_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Say It App - Teacher Registration");
+        getSupportActionBar().setTitle("SayIt! - Teacher Registration");
 
 
         //progress dialog
@@ -114,7 +117,7 @@ public class TeacherRegisterActivity extends AppCompatActivity {
                             int num = Integer.parseInt(temp2); //convert string to int
 
                             //store the database reference of the current user
-                            mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userid);
+                            mDatabase = FirebaseDatabase.getInstance().getReference().child("Teachers").child(userid);
 
                             //store details in hash map, by adding values to the child nodes in db
                             HashMap<String, Object> userMap = new HashMap<>();

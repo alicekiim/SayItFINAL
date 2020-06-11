@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=b9nNm-xxmOY&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=2
+
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
@@ -46,7 +49,7 @@ public class TeacherLoginActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.login_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Say It App - Teacher Login");
+        getSupportActionBar().setTitle("SayIt! - Teacher Login");
 
         //creating a new progress dialog
         mLoginProgress = new ProgressDialog(this);

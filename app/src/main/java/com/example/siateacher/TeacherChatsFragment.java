@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=BJkzVc2D0iY&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=6
+
 package com.example.siateacher;
 
 
@@ -42,7 +45,7 @@ public class TeacherChatsFragment extends Fragment {
 
     private RecyclerView mUsersListRecycler;
     private usersActivity usersActivity;
-    private List<Users> mUsers;
+    private List<Teachers> mUsers;
     private List<Chat> mchat;
 
     private View mMainView;
@@ -100,7 +103,7 @@ public class TeacherChatsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Users user = snapshot.getValue(Users.class);
+                    Teachers user = snapshot.getValue(Teachers.class);
 
                     //Show user only if the student's status value shows they are online and chatting with teacher
                     // (it'll say "status: [teacher id]" on firebase database)
@@ -197,7 +200,7 @@ public class TeacherChatsFragment extends Fragment {
             mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Users user = dataSnapshot.getValue(Users.class);
+                    Teachers user = dataSnapshot.getValue(Teachers.class);
                     if(user != null) {
 
                         //Setting the Intent value to go to the corresponding chat screen when notification is clicked
@@ -251,7 +254,7 @@ public class TeacherChatsFragment extends Fragment {
         //when user presses the home button (i.e. leaves the app for a moment w/o logging out)..
         //..on firebase database it will show their status as "no chat target"
         if(fuser.getUid() != null) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fuser.getUid());
             reference.child("status").setValue("no chat target");
         }
 
@@ -261,7 +264,7 @@ public class TeacherChatsFragment extends Fragment {
         //same as onPause()
         //determines if user is in the chat activity or not
         if(fuser.getUid() != null) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fuser.getUid());
             reference.child("status").setValue("no chat target");
         }
 

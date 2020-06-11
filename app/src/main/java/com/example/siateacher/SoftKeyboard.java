@@ -1,3 +1,5 @@
+//Code sourced from Link2me at https://link2me.tistory.com/1524
+
 package com.example.siateacher;
 
 import android.app.Activity;
@@ -6,8 +8,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-
-//code sourced from Link2me at https://link2me.tistory.com/1524
 
 public class SoftKeyboard extends View {
 

@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Lapit Chat tutorial' by Arathi Singh.
+// Tutorial found at: https://www.youtube.com/watch?v=fECOH4w_Kl4&list=PLGCjwl1RrtcQ3o2jmZtwu2wXEA4OIIq53&index=8
+
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;

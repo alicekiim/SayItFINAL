@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=7H_xBEQPHhw&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=4
+
 package com.example.siateacher.Student;
 
 import androidx.annotation.NonNull;
@@ -45,7 +48,7 @@ public class StudentMainActivity extends AppCompatActivity {
         //create toolbar
         mToolbar = (Toolbar) findViewById(R.id.student_main_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Say It App - Student");
+        getSupportActionBar().setTitle("SayIt! - Student");
 
         //set up ViewPager
         mViewPager = (ViewPager) findViewById(R.id.StudentMain_tabPager);

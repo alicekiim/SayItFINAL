@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=LyAmpfm4ndo&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=3
+
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;

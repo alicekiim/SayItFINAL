@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=BJkzVc2D0iY&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=6
+
 package com.example.siateacher.Student;
 
 import android.app.Notification;
@@ -13,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,7 @@ import android.widget.Button;
 
 import com.example.siateacher.Chat;
 import com.example.siateacher.R;
-import com.example.siateacher.Users;
+import com.example.siateacher.Teachers;
 import com.example.siateacher.chatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,7 +44,7 @@ import java.util.List;
 public class StudentChatsFragment extends Fragment {
 
     //creating variables
-    private List<Users> mUsers;  //list of Users class
+    private List<Teachers> mUsers;  //list of Teachers class
     private List<Chat> mchat;
 
     private View mMainView;
@@ -106,7 +108,7 @@ public class StudentChatsFragment extends Fragment {
                 //create intent to send user to chat activity
                 Intent chat_intent = new Intent(getContext(), chatActivity.class);
 
-                //Check whether Database [Users] (teachers) size and mListCnt are the same
+                //Check whether Database [Teachers] (teachers) size and mListCnt are the same
                 if (mListCnt == mUsers.size()) {
                     //If it is the same, it initializes the mListCnt value to 0
                     mListCnt = 0;
@@ -219,7 +221,7 @@ public class StudentChatsFragment extends Fragment {
     private void readUsers() {
 
         //point to users database
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -230,7 +232,7 @@ public class StudentChatsFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     //get snapshot of users class
-                    Users user = snapshot.getValue(Users.class);
+                    Teachers user = snapshot.getValue(Teachers.class);
 
                     //add the user
                     mUsers.add(user);
@@ -320,14 +322,14 @@ public class StudentChatsFragment extends Fragment {
         if(true){
 
             //Since a different number (int) must be specified for each notification, a serial number is created in num
-            DatabaseReference mReference = FirebaseDatabase.getInstance().getReference("Users").child(notifyId);
+            DatabaseReference mReference = FirebaseDatabase.getInstance().getReference("Teachers").child(notifyId);
 
             //The number of times you call the singleEventValueListener, it get triggers once every time it is called.
             //**(While on the other hand addValueEventListener() fetches the value every time the value is changed in your firebase realtime DB node to which it is referencing.)
             mReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Users user = dataSnapshot.getValue(Users.class);
+                    Teachers user = dataSnapshot.getValue(Teachers.class);
                     if(user != null) {
 
                         //Setting the Intent value to go to the corresponding chat screen when notification is clicked

@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=7H_xBEQPHhw&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=4
+
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
@@ -55,7 +58,7 @@ public class TeacherMainActivity extends AppCompatActivity {
         // storing the toolbar in the toolbar variable
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Say It App - Teacher Area");
+        getSupportActionBar().setTitle("SayIt! - Teacher");
 
         // storing the viewpager in the viewpager variable
         mViewPager = (ViewPager) findViewById(R.id.mainPage_tabPager);
@@ -81,13 +84,13 @@ public class TeacherMainActivity extends AppCompatActivity {
             //get current user
             mfirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             //storing the database reference of the user
-            mReference = FirebaseDatabase.getInstance().getReference("Users").child(mfirebaseUser.getUid());
+            mReference = FirebaseDatabase.getInstance().getReference("Teachers").child(mfirebaseUser.getUid());
 
             mReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     //Get a DataSnapshot for the location at the specified relative path
-                    Users user = dataSnapshot.getValue(Users.class);
+                    Teachers user = dataSnapshot.getValue(Teachers.class);
 
                     // if user is found
                     if(user != null) {

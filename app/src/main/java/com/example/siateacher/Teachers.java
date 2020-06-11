@@ -1,6 +1,9 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=WsyJlFjJkyE&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=5
+
 package com.example.siateacher;
 
-public class Users {
+public class Teachers {
 
 
     public String id;
@@ -9,7 +12,7 @@ public class Users {
     public String status;
     public int num;
 
-    public Users(String id, String name, String image, String status,int num) {
+    public Teachers(String id, String name, String image, String status, int num) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -17,7 +20,7 @@ public class Users {
         this.num = num;
     }
 
-    public Users() {
+    public Teachers() {
     }
 
     public String getId() {

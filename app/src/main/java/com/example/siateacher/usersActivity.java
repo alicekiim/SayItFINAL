@@ -1,3 +1,7 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=WsyJlFjJkyE&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=5
+
+//this activity is to list the students in TeachersChatFragment
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
@@ -5,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -20,10 +22,10 @@ import java.util.List;
 public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder> {
 
     private Context mContext;
-    private List<Users> mUsers;
+    private List<Teachers> mUsers;
 
 
-    public usersActivity (Context mContext, List<Users> mUsers){
+    public usersActivity (Context mContext, List<Teachers> mUsers){
         this.mUsers = mUsers;
         this.mContext = mContext;
     }
@@ -38,10 +40,10 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
     @Override
     public void onBindViewHolder (@NonNull ViewHolder holder, int position){
 
-        final Users user = mUsers.get(position);
+        final Teachers user = mUsers.get(position);
         if(mUsers.size() !=0) {//if there ARE users in the database
 
-            //get their name
+            //get the students name
             holder.name.setText(user.getId());
 
             //and get their image, if no unique image exists, use default image
@@ -52,6 +54,7 @@ public class usersActivity extends RecyclerView.Adapter<usersActivity.ViewHolder
             }
         }
 
+        //and direct to start activity if clicked
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

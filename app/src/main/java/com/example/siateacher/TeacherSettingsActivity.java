@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Lapit Chat tutorial' by Arathi Singh.
+// Tutorial found at: https://www.youtube.com/watch?v=fECOH4w_Kl4&list=PLGCjwl1RrtcQ3o2jmZtwu2wXEA4OIIq53&index=9&t=0s
+
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
@@ -35,8 +38,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-//Credit to KODDEV (https://github.com/KODDevYouTube/ChatAppTutorial/tree/master/app) as his code was used as a framework for this page
 
 public class TeacherSettingsActivity extends AppCompatActivity {
 
@@ -86,18 +87,18 @@ public class TeacherSettingsActivity extends AppCompatActivity {
         String current_uid = mCurrentUser.getUid();
 
         //store the database reference of the current user
-        mUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
+        mUserDB = FirebaseDatabase.getInstance().getReference().child("Teachers").child(current_uid);
 
         //toolbar
         mToolbar = (Toolbar) findViewById(R.id.settings_bar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Say It App - Account Settings");
+        getSupportActionBar().setTitle("SayIt! - Account Settings");
 
         mUserDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Users user = dataSnapshot.getValue(Users.class);
+                Teachers user = dataSnapshot.getValue(Teachers.class);
 
                 //get the name, image and status
                 String name = user.getName();
@@ -183,7 +184,7 @@ public class TeacherSettingsActivity extends AppCompatActivity {
                         String mUri = downloadUri.toString();
 
                         //storing the database reference of the current user to store the users image
-                        mUserDB = FirebaseDatabase.getInstance().getReference("Users").child(mCurrentUser.getUid());
+                        mUserDB = FirebaseDatabase.getInstance().getReference("Teachers").child(mCurrentUser.getUid());
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("image", ""+mUri);
                         mUserDB.updateChildren(map);

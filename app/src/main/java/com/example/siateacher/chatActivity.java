@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Chat App with Firebase' by KODDev.
+// Tutorial found at: https://www.youtube.com/watch?v=1mJv4XxWlu8&list=PLzLFqCABnRQftQQETzoVMuteXzNiXmnj8&index=8
+
 package com.example.siateacher;
 
 import android.app.Activity;
@@ -6,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -111,7 +113,7 @@ public class chatActivity extends AppCompatActivity {
 //what is the purpose of this? explain
         if(classification.equals("teacher")) {//If teacher user..
             //get teacher id
-            reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+            reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fuser.getUid());
             //make their status "online"
             reference.child("status").setValue("online");
             //get the id of the student
@@ -123,7 +125,7 @@ public class chatActivity extends AppCompatActivity {
             //make their status "online"
             reference.child("status").setValue("online");
             //get the id of the teacher user
-            reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+            reference = FirebaseDatabase.getInstance().getReference("Teachers").child(userid);
 
 
             //..and create new hashmap
@@ -231,7 +233,7 @@ public class chatActivity extends AppCompatActivity {
                 //if datasnapshot exists
                 if(dataSnapshot.exists()) {
                     //get username of user
-                    Users user = dataSnapshot.getValue(Users.class);
+                    Teachers user = dataSnapshot.getValue(Teachers.class);
                     username.setText(user.getName());
 
                     //get image of user
@@ -512,7 +514,7 @@ public class chatActivity extends AppCompatActivity {
 
 
             } else if (classification.equals("teacher")) {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fuser.getUid());
                 reference.child("status").setValue("no chat target");
             }
         }
@@ -524,7 +526,7 @@ public class chatActivity extends AppCompatActivity {
         //when active in the chat page/window
         if(classification.equals("student")) {
             //show the teachers id in the students status
-            mReference = FirebaseDatabase.getInstance().getReference("Users").child(offUserid);
+            mReference = FirebaseDatabase.getInstance().getReference("Teachers").child(offUserid);
         } else if (classification.equals("teacher")) {
             //show the students id in the teachers status
             mReference = FirebaseDatabase.getInstance().getReference("Students").child(offUserid);
@@ -535,7 +537,7 @@ public class chatActivity extends AppCompatActivity {
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Users user = dataSnapshot.getValue(Users.class);
+                Teachers user = dataSnapshot.getValue(Teachers.class);
 
                 if (user != null) {
                     //show the teachers id in the students status
@@ -548,7 +550,7 @@ public class chatActivity extends AppCompatActivity {
                     }
                     //show the students id in the teachers status
                     else if (classification.equals("teacher")) {
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Teachers").child(fuser.getUid());
                         reference.child("status").setValue(offUserid);
 
                         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

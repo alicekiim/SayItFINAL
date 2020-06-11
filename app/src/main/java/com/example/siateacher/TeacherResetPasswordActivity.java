@@ -1,3 +1,6 @@
+// Code adapted from tutorial 'Android Firebase Send a Password Reset Email' by Coding Demo.
+// Tutorial found at: https://www.youtube.com/watch?v=t8vUdt1eEzE
+
 package com.example.siateacher;
 
 import androidx.annotation.NonNull;
@@ -32,7 +35,7 @@ public class TeacherResetPasswordActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.resetPw_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Say It App - Reset Password");
+        getSupportActionBar().setTitle("SayIt! - Reset Password");
 
         //initialise the variables
         mEmail = findViewById(R.id.resetPw_email);
