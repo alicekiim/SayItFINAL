@@ -110,7 +110,6 @@ public class chatActivity extends AppCompatActivity {
         //gets current user
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
-//what is the purpose of this? explain
         if(classification.equals("teacher")) {//If teacher user..
             //get teacher id
             dbRef = FirebaseDatabase.getInstance().getReference("Teachers").child(fbUser.getUid());
@@ -175,8 +174,8 @@ public class chatActivity extends AppCompatActivity {
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //(if click endchat + select yes)
 
+                        //(if click endchat + select yes)
                         //point to "Chats" in firebase database..
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
                         //..and store the chats in "chatLogList"
@@ -252,7 +251,7 @@ public class chatActivity extends AppCompatActivity {
                     readMessages(fbUser.getUid(), userid, user.getImage());
 
                 }else{
-                    //Log.e("Error", "chatActivity249"+classification);
+
 
                     //if no datasnapshot exists, close the chat page
                     finish();
@@ -301,7 +300,7 @@ public class chatActivity extends AppCompatActivity {
     //when sending message..
     private void sendMessage(String sender, String receiver, String message) {
 
-        //get dbRef to database
+        //get reference to database
         //A DatabaseReference represents a specific location in database and can be used for reading or writing data to that database location.
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -333,7 +332,7 @@ public class chatActivity extends AppCompatActivity {
         //list to store chat
         aChat = new ArrayList<>();
 
-        //get dbRef to "chats" in database
+        //get reference to "chats" in database
         //A DatabaseReference represents a specific location in database and can be used for reading or writing data to that database location.
         DatabaseReference chtReference = FirebaseDatabase.getInstance().getReference("Chats");
         chtReference.addValueEventListener(new ValueEventListener() {
@@ -384,7 +383,7 @@ public class chatActivity extends AppCompatActivity {
 
                 }
 
-                //code sourced from Link2me at https://link2me.tistory.com/1524
+                //keyboard code sourced from Link2me at https://link2me.tistory.com/1524
 
                 //Added because input contents are obscured when the keyboard window comes up on the chat screen
                 final SoftKeyboard softKeyboardDetector = new SoftKeyboard(chatActivity.this);

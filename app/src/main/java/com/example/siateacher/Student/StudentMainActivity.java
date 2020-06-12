@@ -100,7 +100,7 @@ public class StudentMainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    //get reference to chatlist in database
+                    //get reference to Chatlist in database
                     DatabaseReference delRef = FirebaseDatabase.getInstance().getReference("ChatList");
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         //Read ChatList key value (teacher)
@@ -121,6 +121,7 @@ public class StudentMainActivity extends AppCompatActivity {
 
             //point to [Students] database
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Students");
+
             //Deletes anonymous user from database [Students]
             ref.child(mAuth).removeValue();
 

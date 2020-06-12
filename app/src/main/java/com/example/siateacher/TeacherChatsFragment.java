@@ -90,6 +90,7 @@ public class TeacherChatsFragment extends Fragment {
         return aMainView;
     }
 
+    //(shows student list on teachers screen)
     private void readUsers() {
 
         //gets the user id of the current user within "Chatlist" in the database of firebase
@@ -242,8 +243,6 @@ public class TeacherChatsFragment extends Fragment {
 
 
 
-    //"what is it's purpose?"
-    //I thought that maybe it could be used in future improvements. It could be used to find statistics on how long the teacher user spend time with each student.
 
     public void onPause() {
         super.onPause();

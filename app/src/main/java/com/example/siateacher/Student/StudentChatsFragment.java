@@ -108,14 +108,14 @@ public class StudentChatsFragment extends Fragment {
                 //create intent to send user to chat activity
                 Intent chat_intent = new Intent(getContext(), chatActivity.class);
 
-                //Check whether Database [Teachers] (teachers) size and mListCnt are the same
+                //Check whether Database [Teachers] size and mListCnt are the same
                 if (mListCnt == teacherUsers.size()) {
                     //If it is the same, it initializes the mListCnt value to 0
                     mListCnt = 0;
 
                 }
 
-                //pass student "id" to chatActivity. Value of id is: teacherUsers.get(mListCnt).getId()
+                //pass student "id" to chatActivity. (Value of id is: teacherUsers.get(mListCnt).getId()
                 chat_intent.putExtra("id", teacherUsers.get(mListCnt).getId());
                 //pass "classification" to chatActivity. the value is "student"
                 //purpose is to check whether the student or the teacher entered the chat
@@ -203,7 +203,7 @@ public class StudentChatsFragment extends Fragment {
                                         createNotificationChannel();
                                         //Load list of teachers to use for chat
                                         readUsers();
-                                        //reads chat for unread messages --> in order to create notification
+                                        //reads chat for unread messages, to create notification
                                         readChatForNotification();
                                     }
                                 }
@@ -217,7 +217,7 @@ public class StudentChatsFragment extends Fragment {
                 });
     }
 
-    //reads list of teachers (which is stored in database under "users")
+    //reads list of teachers (stored in database under "teachers")
     private void readUsers() {
 
         //point to users database
@@ -321,7 +321,7 @@ public class StudentChatsFragment extends Fragment {
 
         if(true){
 
-            //Since a different number (int) must be specified for each notification, a serial number is created in num
+            //Since a different number (int) must be specified for each notification, a serial number is created in num (line 184)
             DatabaseReference mReference = FirebaseDatabase.getInstance().getReference("Teachers").child(notifyId);
 
             //The number of times you call the singleEventValueListener, it get triggers once every time it is called.

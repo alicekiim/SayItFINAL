@@ -20,17 +20,6 @@ public class TeacherFaqActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SayIt! - FAQ's");
 
-       /*
-
-        toolB.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent back_intent = new Intent(TeacherFaqActivity.this, TeacherMainActivity.class);
-                startActivity(back_intent);
-            }
-        });
-
-        */
 
     }
 }

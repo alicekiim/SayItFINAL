@@ -68,7 +68,6 @@ public class TeacherLoginActivity extends AppCompatActivity {
             }
         });
 
-        //..? how to add back button -- parent act
 
         toolB.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

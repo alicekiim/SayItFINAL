@@ -72,8 +72,6 @@ public class TeacherMainActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.profile_image);
         username = findViewById(R.id.name);
 
-        //startService(new Intent(this, UnCatchTaskService.class)); //task종료시점을 알기 위해 학생 초기화면에 startService 시작한다.
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             //Go to login
         }
@@ -124,18 +122,14 @@ public class TeacherMainActivity extends AppCompatActivity {
     }
 
 
- /*   private void backToStartPage() {
-        Intent startIntent = new Intent(TeacherMainActivity.this, StartActivity.class);
-        startActivity(startIntent);
-        finish();
-    }*/
+
 
     private void backToStartPage() {
 
         Intent startIntent = new Intent(TeacherMainActivity.this, StartActivity.class);
         startIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(startIntent);
-        //finish();
+
     }
 
 
